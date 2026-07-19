@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#133c2f">
+    <title>Admin Portal | Mbombela Connect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        :root {
+            --primary: #133c2f;
+            --primary-dark: #09271e;
+            --accent: #e8a823;
+            --bg: #f4f2ec;
+            --surface: #fff;
+            --text: #16201b;
+            --muted: #6f7974;
+            --border: #d9ddd8;
+            --danger: #b63c3c;
+            --success: #23865f;
+            --warning: #b57d00;
+            --shadow: 0 18px 50px rgba(23, 32, 28, .12);
+            --radius: 20px
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: "DM Sans", sans-serif
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit
+        }
+
+        button {
+            cursor: pointer
+        }
+
+        .hidden {
+            display: none !important
+        }
+
+        .admin {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 290px 1fr
+        }
+
+        .sidebar {
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            background: #0b1712;
+            color: #fff;
+            padding: 24px 18px;
+            display: flex;
+            flex-direction: column
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 10px 24px
+        }
+
+        .brand-mark {
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            background: var(--accent);
+            color: #201600;
+            display: grid;
+            place-items: center
+        }
+
+        .brand strong {
+            display: block;
+            font-family: "Manrope", sans-serif
+        }
+
+        .brand span {
+            display: block;
+            font-size: 12px;
+            color: rgba(255, 255, 255, .55);
+            margin-top: 3px
+        }
+
+        .nav {
+            display: grid;
+            gap: 7px;
+            overflow: auto
+        }
+
+        .nav button {
+            width: 100%;
+            border: 0;
+            background: transparent;
+            color: rgba(255, 255, 255, .72);
+            padding: 13px 14px;
+            border-radius: 12px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            font-weight: 700
+        }
+
+        .nav button.active,
+        .nav button:hover {
+            background: #173326;
+            color: #fff
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            border-top: 1px solid rgba(255, 255, 255, .1);
+            padding-top: 16px
+        }
+
+        .main {
+            min-width: 0
+        }
+
+        .topbar {
+            height: 76px;
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            position: sticky;
+            top: 0;
+            z-index: 100
+        }
+
+        .topbar h1 {
+            margin: 0;
+            font-family: "Manrope", sans-serif;
+            font-size: 24px
+        }
+
+        .content {
+            padding: 28px
+        }
+
+        .btn {
+            border: 0;
+            min-height: 42px;
+            border-radius: 11px;
+            padding: 0 15px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff
+        }
+
+        .btn-outline {
+            background: #fff;
+            border: 1px solid var(--border);
+            color: var(--text)
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: #fff
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: #fff
+        }
+
+        .btn-warning {
+            background: var(--accent);
+            color: #211700
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 24px
+        }
+
+        .stat {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px
+        }
+
+        .stat i {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: #e8f0ec;
+            color: var(--primary);
+            display: grid;
+            place-items: center;
+            margin-bottom: 15px
+        }
+
+        .stat strong {
+            display: block;
+            font-family: "Manrope", sans-serif;
+            font-size: 28px
+        }
+
+        .stat span {
+            color: var(--muted);
+            font-size: 12px
+        }
+
+        .panel {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 22px
+        }
+
+        .panel-head {
+            padding: 19px 22px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px
+        }
+
+        .panel-head h2 {
+            margin: 0;
+            font-family: "Manrope", sans-serif;
+            font-size: 20px
+        }
+
+        .panel-body {
+            padding: 22px
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .filters input,
+        .filters select {
+            min-height: 42px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0 12px
+        }
+
+        .table-wrap {
+            overflow: auto
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px
+        }
+
+        .table th,
+        .table td {
+            padding: 13px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px
+        }
+
+        .table th {
+            color: var(--muted);
+            font-size: 11px;
+            text-transform: uppercase
+        }
+
+        .badge {
+            display: inline-flex;
+            padding: 7px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase
+        }
+
+        .approved {
+            background: #e3f5ec;
+            color: #16704e
+        }
+
+        .pending {
+            background: #fff3cf;
+            color: #8d6500
+        }
+
+        .rejected {
+            background: #fde5e5;
+            color: #9a2f2f
+        }
+
+        .draft {
+            background: #edf0ee;
+            color: #5c6661
+        }
+
+        .admin-role {
+            background: #e8e4ff;
+            color: #5941a5
+        }
+
+        .staff-role {
+            background: #e0efff;
+            color: #1f5c95
+        }
+
+        .user-role {
+            background: #edf0ee;
+            color: #5c6661
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px
+        }
+
+        .field {
+            display: grid;
+            gap: 7px
+        }
+
+        .field.full {
+            grid-column: 1/-1
+        }
+
+        .field label {
+            font-size: 13px;
+            font-weight: 700
+        }
+
+        .field input,
+        .field textarea,
+        .field select {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 14px;
+            outline: none
+        }
+
+        .field textarea {
+            min-height: 120px
+        }
+
+        .empty {
+            padding: 45px 20px;
+            text-align: center;
+            color: var(--muted)
+        }
+
+        .auth {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, #09271e, #133c2f);
+            padding: 24px
+        }
+
+        .auth-card {
+            width: min(460px, 100%);
+            background: #fff;
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: var(--shadow)
+        }
+
+        .auth-card h1 {
+            font-family: "Manrope", sans-serif;
+            font-size: 32px;
+            margin: 0 0 8px
+        }
+
+        .auth-card p {
+            color: var(--muted);
+            margin: 0 0 22px
+        }
+
+        .toast {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background: #16201b;
+            color: #fff;
+            padding: 15px 18px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: .2s;
+            z-index: 5000
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: none
+        }
+
+        .mobile-menu {
+            display: none
+        }
+
+        .overlay {
+            display: none
+        }
+
+        @media(max-width:1150px) {
+            .stats {
+                grid-template-columns: repeat(3, 1fr)
+            }
+        }
+
+        @media(max-width:980px) {
+            .admin {
+                grid-template-columns: 1fr
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -300px;
+                width: 290px;
+                z-index: 2000;
+                transition: .25s
+            }
+
+            .sidebar.open {
+                left: 0
+            }
+
+            .mobile-menu {
+                display: inline-flex
+            }
+
+            .overlay.show {
+                display: block;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, .45);
+                z-index: 1500
+            }
+        }
+
+        @media(max-width:680px) {
+            .content {
+                padding: 18px
+            }
+
+            .topbar {
+                padding: 0 16px
+            }
+
+            .stats,
+            .grid {
+                grid-template-columns: 1fr
+            }
+
+            .panel-head {
+                align-items: flex-start;
+                flex-direction: column
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <section class="auth" id="authScreen">
+        <form class="auth-card" id="loginForm">
+            <h1>Admin Portal</h1>
+            <p>Sign in with an authorised Mbombela Connect administrator account.</p>
+            <div class="grid">
+                <div class="field full"><label>Email</label><input id="email" type="email" required></div>
+                <div class="field full"><label>Password</label><input id="password" type="password" required></div>
+                <div class="field full"><button class="btn btn-primary" type="submit">Sign in securely</button></div>
+            </div>
+        </form>
+    </section>
+    <div class="admin hidden" id="adminApp">
+        <aside class="sidebar" id="sidebar">
+            <div class="brand"><span class="brand-mark"><i
+                        class="fa-solid fa-shield-halved"></i></span><span><strong>Mbombela
+                        Connect</strong><span>Administration</span></span></div>
+            <nav class="nav">
+                <button class="active" data-view="dashboard"><i class="fa-solid fa-chart-pie"></i>Dashboard</button>
+                <button data-view="businesses"><i class="fa-solid fa-store"></i>Businesses</button>
+                <button data-view="events"><i class="fa-regular fa-calendar"></i>Events</button>
+                <button data-view="jobs"><i class="fa-solid fa-briefcase"></i>Jobs</button>
+                <button data-view="accommodation"><i class="fa-solid fa-bed"></i>Accommodation</button>
+                <button data-view="tourism"><i class="fa-solid fa-map-location-dot"></i>Tourism</button>
+                <button data-view="promotions"><i class="fa-solid fa-tags"></i>Promotions</button>
+                <button data-view="announcements"><i class="fa-solid fa-bullhorn"></i>Announcements</button>
+                <button data-view="reviews"><i class="fa-solid fa-star"></i>Reviews</button>
+                <button data-view="users"><i class="fa-solid fa-users"></i>Users</button>
+            </nav>
+            <div class="sidebar-bottom">
+                <div style="padding:10px"><strong id="adminName">Administrator</strong>
+                    <div id="adminEmail" style="font-size:12px;color:rgba(255,255,255,.55);margin-top:4px"></div>
+                </div><button class="btn btn-outline" id="logoutBtn" style="width:100%">Sign out</button>
+            </div>
+        </aside>
+        <div class="overlay" id="overlay"></div>
+        <main class="main">
+            <header class="topbar">
+                <div style="display:flex;align-items:center;gap:10px"><button class="btn btn-outline mobile-menu"
+                        id="menuBtn"><i class="fa-solid fa-bars"></i></button>
+                    <h1 id="pageTitle">Dashboard</h1>
+                </div><a href="index.html" target="_blank" class="btn btn-outline"><i
+                        class="fa-solid fa-arrow-up-right-from-square"></i>Public website</a>
+            </header>
+            <div class="content">
+                <section id="view-dashboard">
+                    <div class="stats">
+                        <div class="stat"><i class="fa-solid fa-store"></i><strong
+                                id="sBusinesses">0</strong><span>Businesses</span></div>
+                        <div class="stat"><i class="fa-regular fa-calendar"></i><strong
+                                id="sEvents">0</strong><span>Events</span></div>
+                        <div class="stat"><i class="fa-solid fa-briefcase"></i><strong
+                                id="sJobs">0</strong><span>Jobs</span></div>
+                        <div class="stat"><i class="fa-solid fa-users"></i><strong
+                                id="sUsers">0</strong><span>Users</span></div>
+                        <div class="stat"><i class="fa-solid fa-hourglass-half"></i><strong
+                                id="sPending">0</strong><span>Pending approvals</span></div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-head">
+                            <h2>Pending moderation</h2>
+                        </div>
+                        <div class="panel-body" id="pendingSummary"></div>
+                    </div>
+                </section>
+
+                <section id="view-businesses" class="hidden"></section>
+                <section id="view-events" class="hidden"></section>
+                <section id="view-jobs" class="hidden"></section>
+                <section id="view-accommodation" class="hidden"></section>
+                <section id="view-tourism" class="hidden"></section>
+                <section id="view-promotions" class="hidden"></section>
+
+                <section id="view-announcements" class="hidden">
+                    <div class="panel">
+                        <div class="panel-head">
+                            <h2>Create announcement</h2>
+                        </div>
+                        <div class="panel-body">
+                            <form id="announcementForm" class="grid">
+                                <div class="field"><label>Title</label><input id="announcementTitle" required></div>
+                                <div class="field"><label>Priority</label><select id="announcementPriority">
+                                        <option value="0">Normal</option>
+                                        <option value="10">Important</option>
+                                        <option value="50">Urgent</option>
+                                        <option value="100">Emergency</option>
+                                    </select></div>
+                                <div class="field full"><label>Description</label><textarea id="announcementDescription"
+                                        required></textarea></div>
+                                <div class="field"><label>Starts at</label><input id="announcementStart"
+                                        type="datetime-local"></div>
+                                <div class="field"><label>Ends at</label><input id="announcementEnd"
+                                        type="datetime-local"></div>
+                                <div class="field full"><button class="btn btn-primary" type="submit">Publish
+                                        announcement</button></div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-head">
+                            <h2>Announcements</h2>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-wrap">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Announcement</th>
+                                            <th>Priority</th>
+                                            <th>Published</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="announcementRows"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="view-reviews" class="hidden">
+                    <div class="panel">
+                        <div class="panel-head">
+                            <h2>Reviews moderation</h2>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-wrap">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>User</th>
+                                            <th>Business</th>
+                                            <th>Rating</th>
+                                            <th>Comment</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="reviewRows"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section id="view-users" class="hidden">
+                    <div class="panel">
+                        <div class="panel-head">
+                            <h2>User management</h2>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-wrap">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                            <th>Verified</th>
+                                            <th>Active</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="userRows"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <div class="toast" id="toast"></div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "https://aiwkouqlkcvldeqwhcso.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_gNz9sA61ZME7SQB-Y5qTjQ_nQ-Qpj39";
+        const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } });
+        let user, profile, dataCache = {};
+        const $ = s => document.querySelector(s);
+        function toast(m) { const t = $("#toast"); t.textContent = m; t.classList.add("show"); setTimeout(() => t.classList.remove("show"), 2800) }
+        function esc(v = "") { return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;") }
+        function badge(s) { return `<span class="badge ${s || "draft"}">${esc(s || "draft")}</span>` }
+        function switchView(name) { document.querySelectorAll("[id^='view-']").forEach(x => x.classList.add("hidden")); $(`#view-${name}`).classList.remove("hidden"); document.querySelectorAll(".nav button").forEach(b => b.classList.toggle("active", b.dataset.view === name)); $("#pageTitle").textContent = { dashboard: "Dashboard", businesses: "Businesses", events: "Events", jobs: "Jobs", accommodation: "Accommodation", tourism: "Tourism", promotions: "Promotions", announcements: "Announcements", reviews: "Reviews", users: "Users" }[name]; $("#sidebar").classList.remove("open"); $("#overlay").classList.remove("show") }
+        async function init() { const { data: { session } } = await db.auth.getSession(); if (!session) { $("#authScreen").classList.remove("hidden"); $("#adminApp").classList.add("hidden"); return } user = session.user; const { data: p } = await db.from("profiles").select("*").eq("id", user.id).maybeSingle(); profile = p; if (!profile || !["admin", "staff"].includes(profile.role)) { await db.auth.signOut(); toast("Access denied. Admin account required."); return } $("#authScreen").classList.add("hidden"); $("#adminApp").classList.remove("hidden"); $("#adminName").textContent = profile.full_name || "Administrator"; $("#adminEmail").textContent = user.email; await loadAll() }
+        $("#loginForm").onsubmit = async e => { e.preventDefault(); const { error } = await db.auth.signInWithPassword({ email: $("#email").value, password: $("#password").value }); if (error) return toast(error.message); await init() };
+        $("#logoutBtn").onclick = async () => { await db.auth.signOut(); location.reload() };
+        document.querySelectorAll(".nav button").forEach(b => b.onclick = () => switchView(b.dataset.view)); $("#menuBtn").onclick = () => { $("#sidebar").classList.add("open"); $("#overlay").classList.add("show") }; $("#overlay").onclick = () => { $("#sidebar").classList.remove("open"); $("#overlay").classList.remove("show") };
+        const modules = [
+            { key: "businesses", label: "Businesses", title: "name" },
+            { key: "events", label: "Events", title: "title" },
+            { key: "jobs", label: "Jobs", title: "title" },
+            { key: "accommodations", view: "accommodation", label: "Accommodation", title: "name" },
+            { key: "tourism_places", view: "tourism", label: "Tourism", title: "name" },
+            { key: "promotions", label: "Promotions", title: "title" }
+        ];
+        async function loadAll() {
+            const results = await Promise.all([
+                db.from("businesses").select("*").order("created_at", { ascending: false }),
+                db.from("events").select("*").order("created_at", { ascending: false }),
+                db.from("jobs").select("*").order("created_at", { ascending: false }),
+                db.from("accommodations").select("*").order("created_at", { ascending: false }),
+                db.from("tourism_places").select("*").order("created_at", { ascending: false }),
+                db.from("promotions").select("*").order("created_at", { ascending: false }),
+                db.from("profiles").select("*").order("created_at", { ascending: false }),
+                db.from("reviews").select("*,profiles(full_name),businesses(name)").order("created_at", { ascending: false }),
+                db.from("announcements").select("*").order("created_at", { ascending: false })
+            ]);
+            modules.forEach((m, i) => dataCache[m.key] = results[i].data || []);
+            dataCache.profiles = results[6].data || []; dataCache.reviews = results[7].data || []; dataCache.announcements = results[8].data || [];
+            renderDashboard(); modules.forEach(renderModule); renderUsers(); renderReviews(); renderAnnouncements();
+        }
+        function renderDashboard() {
+            $("#sBusinesses").textContent = dataCache.businesses.length; $("#sEvents").textContent = dataCache.events.length; $("#sJobs").textContent = dataCache.jobs.length; $("#sUsers").textContent = dataCache.profiles.length;
+            const pending = modules.reduce((n, m) => n + dataCache[m.key].filter(x => x.status === "pending").length, 0); $("#sPending").textContent = pending;
+            const lines = modules.map(m => `<div style="padding:14px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between"><strong>${m.label}</strong><span>${dataCache[m.key].filter(x => x.status === "pending").length} pending</span></div>`).join(""); $("#pendingSummary").innerHTML = lines || '<div class="empty">Nothing pending.</div>';
+        }
+        function renderModule(m) {
+            const view = m.view || m.key; const rows = dataCache[m.key];
+            $(`#view-${view}`).innerHTML = `<div class="panel"><div class="panel-head"><h2>${m.label} moderation</h2><div class="filters"><select id="${view}Status"><option value="">All statuses</option><option>pending</option><option>approved</option><option>rejected</option></select><input id="${view}Search" placeholder="Search"></div></div><div class="panel-body"><div class="table-wrap"><table class="table"><thead><tr><th>Title</th><th>Status</th><th>Published</th><th>Featured</th><th>Actions</th></tr></thead><tbody id="${view}Rows"></tbody></table></div></div></div>`;
+            const draw = () => { const s = $(`#${view}Status`).value, q = $(`#${view}Search`).value.toLowerCase(); const list = rows.filter(x => (!s || x.status === s) && (!q || String(x[m.title] || "").toLowerCase().includes(q))); $(`#${view}Rows`).innerHTML = list.length ? list.map(x => `<tr><td>${esc(x[m.title] || "-")}</td><td>${badge(x.status)}</td><td>${x.is_published ? "Yes" : "No"}</td><td>${x.is_featured ? "Yes" : "No"}</td><td><button class="btn btn-success" onclick="moderate('${m.key}','${x.id}','approved',true)">Approve</button> <button class="btn btn-warning" onclick="moderate('${m.key}','${x.id}','pending',false)">Pending</button> <button class="btn btn-danger" onclick="moderate('${m.key}','${x.id}','rejected',false)">Reject</button> <button class="btn btn-outline" onclick="toggleFeatured('${m.key}','${x.id}',${!x.is_featured})">Feature</button> <button class="btn btn-danger" onclick="removeItem('${m.key}','${x.id}')">Delete</button></td></tr>`).join("") : `<tr><td colspan="5">No records found.</td></tr>` };
+            $(`#${view}Status`).onchange = draw; $(`#${view}Search`).oninput = draw; draw();
+        }
+        window.moderate = async (table, id, status, publish) => { const { error } = await db.from(table).update({ status, is_published: publish }).eq("id", id); if (error) return toast(error.message); toast(`${status} successfully.`); await loadAll() };
+        window.toggleFeatured = async (table, id, value) => { const { error } = await db.from(table).update({ is_featured: value }).eq("id", id); if (error) return toast(error.message); toast("Featured status updated."); await loadAll() };
+        window.removeItem = async (table, id) => { if (!confirm("Delete this record permanently?")) return; const { error } = await db.from(table).delete().eq("id", id); if (error) return toast(error.message); toast("Record deleted."); await loadAll() };
+        function renderUsers() { $("#userRows").innerHTML = dataCache.profiles.length ? dataCache.profiles.map(x => `<tr><td>${esc(x.full_name || "-")}</td><td>${esc(x.email || "-")}</td><td><span class="badge ${x.role === 'admin' ? 'admin-role' : x.role === 'staff' ? 'staff-role' : 'user-role'}">${esc(x.role || "user")}</span></td><td>${x.is_verified ? "Yes" : "No"}</td><td>${x.is_active !== false ? "Yes" : "No"}</td><td><select onchange="changeRole('${x.id}',this.value)"><option value="user" ${x.role === 'user' ? 'selected' : ''}>user</option><option value="business_owner" ${x.role === 'business_owner' ? 'selected' : ''}>business_owner</option><option value="staff" ${x.role === 'staff' ? 'selected' : ''}>staff</option><option value="admin" ${x.role === 'admin' ? 'selected' : ''}>admin</option></select> <button class="btn btn-outline" onclick="toggleUser('${x.id}',${x.is_active === false})">${x.is_active === false ? "Activate" : "Disable"}</button></td></tr>`).join("") : '<tr><td colspan="6">No users.</td></tr>' }
+        window.changeRole = async (id, role) => { const { error } = await db.from("profiles").update({ role }).eq("id", id); if (error) return toast(error.message); toast("Role updated."); await loadAll() };
+        window.toggleUser = async (id, active) => { const { error } = await db.from("profiles").update({ is_active: active }).eq("id", id); if (error) return toast(error.message); toast("User status updated."); await loadAll() };
+        function renderReviews() { $("#reviewRows").innerHTML = dataCache.reviews.length ? dataCache.reviews.map(x => `<tr><td>${esc(x.profiles?.full_name || "-")}</td><td>${esc(x.businesses?.name || "-")}</td><td>${esc(x.rating || 0)}</td><td>${esc(x.comment || "")}</td><td><button class="btn btn-danger" onclick="deleteReview('${x.id}')">Delete</button></td></tr>`).join("") : '<tr><td colspan="5">No reviews.</td></tr>' }
+        window.deleteReview = async id => { if (!confirm("Delete this review?")) return; const { error } = await db.from("reviews").delete().eq("id", id); if (error) return toast(error.message); await loadAll(); toast("Review deleted.") };
+        function renderAnnouncements() {
+            $("#announcementRows").innerHTML = dataCache.announcements.length
+                ? dataCache.announcements.map(x => `
+      <tr>
+        <td>
+          <strong>${esc(x.title)}</strong>
+          <div style="margin-top:5px;color:var(--muted);font-size:12px;max-width:430px">
+            ${esc(x.description || "")}
+          </div>
+        </td>
+        <td>${Number(x.priority || 0)}</td>
+        <td>${x.is_published ? "Yes" : "No"}</td>
+        <td>
+          <button class="btn btn-outline" onclick="toggleAnnouncement('${x.id}',${!x.is_published})">
+            ${x.is_published ? "Unpublish" : "Publish"}
+          </button>
+          <button class="btn btn-danger" onclick="deleteAnnouncement('${x.id}')">
+            Delete
+          </button>
+        </td>
+      </tr>
+    `).join("")
+                : '<tr><td colspan="4">No announcements.</td></tr>';
+        }
+        $("#announcementForm").onsubmit = async e => {
+            e.preventDefault();
+
+            const startsAt = $("#announcementStart").value
+                ? new Date($("#announcementStart").value).toISOString()
+                : new Date(Date.now() - 5 * 60 * 1000).toISOString();
+
+            const endsAt = $("#announcementEnd").value
+                ? new Date($("#announcementEnd").value).toISOString()
+                : null;
+
+            if (endsAt && new Date(endsAt) < new Date(startsAt)) {
+                return toast("The end date cannot be before the start date.");
+            }
+
+            const payload = {
+                created_by: user.id,
+                title: $("#announcementTitle").value.trim(),
+                description: $("#announcementDescription").value.trim(),
+                priority: Number($("#announcementPriority").value || 0),
+                starts_at: startsAt,
+                ends_at: endsAt,
+                is_published: true
+            };
+
+            const { error } = await db.from("announcements").insert(payload);
+
+            if (error) {
+                console.error("Announcement insert error:", error);
+                return toast(error.message);
+            }
+
+            $("#announcementForm").reset();
+            toast("Announcement published.");
+            await loadAll();
+        };
+        window.toggleAnnouncement = async (id, value) => { const { error } = await db.from("announcements").update({ is_published: value }).eq("id", id); if (error) return toast(error.message); await loadAll() };
+        window.deleteAnnouncement = async id => { if (!confirm("Delete this announcement?")) return; const { error } = await db.from("announcements").delete().eq("id", id); if (error) return toast(error.message); await loadAll() };
+        init();
+    </script>
+</body>
+
+</html>

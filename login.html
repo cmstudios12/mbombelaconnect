@@ -1,0 +1,2152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#133c2f" />
+
+  <title>Customer Portal | Mbombela Connect</title>
+  <meta
+    name="description"
+    content="Manage your Mbombela Connect favourites, reviews, notifications and profile."
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+  />
+
+  <style>
+    :root {
+      --primary: #133c2f;
+      --primary-dark: #09271e;
+      --primary-soft: #e8f0ec;
+      --accent: #e8a823;
+      --background: #f5f3ed;
+      --surface: #ffffff;
+      --surface-alt: #ece8de;
+      --text: #17201c;
+      --muted: #69736e;
+      --border: #d9ddd8;
+      --danger: #b93838;
+      --success: #23865f;
+      --warning: #a96f00;
+      --shadow-sm: 0 8px 24px rgba(23, 32, 28, 0.08);
+      --shadow-md: 0 18px 50px rgba(23, 32, 28, 0.12);
+      --radius-md: 20px;
+      --radius-lg: 30px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family: "DM Sans", sans-serif;
+    }
+
+    body.menu-open {
+      overflow: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .btn {
+      min-height: 44px;
+      border: 0;
+      border-radius: 12px;
+      padding: 0 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 800;
+      transition: 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-outline {
+      background: white;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: #211700;
+    }
+
+    .auth-screen {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      background: white;
+    }
+
+    .auth-visual {
+      padding: 60px;
+      color: white;
+      background:
+        linear-gradient(135deg, rgba(9, 39, 30, 0.96), rgba(19, 60, 47, 0.78)),
+        url("https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1600&q=80")
+          center/cover;
+      display: flex;
+      align-items: end;
+    }
+
+    .auth-visual h1 {
+      margin: 14px 0 18px;
+      max-width: 660px;
+      font-family: "Manrope", sans-serif;
+      font-size: 58px;
+      line-height: 1;
+      letter-spacing: -2px;
+    }
+
+    .auth-visual p {
+      max-width: 620px;
+      color: rgba(255,255,255,.72);
+      line-height: 1.8;
+      font-size: 17px;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .auth-form-wrap {
+      display: grid;
+      place-items: center;
+      padding: 30px;
+    }
+
+    .auth-card {
+      width: min(470px, 100%);
+    }
+
+    .auth-card h2 {
+      margin: 0 0 8px;
+      font-family: "Manrope", sans-serif;
+      font-size: 34px;
+    }
+
+    .auth-card > p {
+      margin: 0 0 24px;
+      color: var(--muted);
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 5px;
+      background: #eef1ee;
+      border-radius: 14px;
+      padding: 5px;
+      margin-bottom: 20px;
+    }
+
+    .tabs button {
+      border: 0;
+      background: transparent;
+      border-radius: 10px;
+      padding: 11px;
+      font-weight: 800;
+    }
+
+    .tabs button.active {
+      background: white;
+      box-shadow: 0 4px 14px rgba(0,0,0,.07);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 15px;
+    }
+
+    .field {
+      display: grid;
+      gap: 7px;
+    }
+
+    .field.full {
+      grid-column: 1/-1;
+    }
+
+    .field label {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: white;
+      padding: 12px 14px;
+      outline: none;
+    }
+
+    .field textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(19,60,47,.1);
+    }
+
+    .portal {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 275px 1fr;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 24px 18px;
+      background: #0c1712;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      z-index: 2000;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 10px 24px;
+    }
+
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: var(--accent);
+      color: #211700;
+      font-size: 20px;
+    }
+
+    .brand-copy strong,
+    .brand-copy span {
+      display: block;
+    }
+
+    .brand-copy strong {
+      font-family: "Manrope", sans-serif;
+    }
+
+    .brand-copy span {
+      margin-top: 3px;
+      color: rgba(255,255,255,.55);
+      font-size: 12px;
+    }
+
+    .nav {
+      display: grid;
+      gap: 7px;
+    }
+
+    .nav button {
+      width: 100%;
+      border: 0;
+      border-radius: 12px;
+      background: transparent;
+      color: rgba(255,255,255,.72);
+      padding: 13px 14px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      text-align: left;
+      font-weight: 700;
+    }
+
+    .nav button.active,
+    .nav button:hover {
+      background: #173326;
+      color: white;
+    }
+
+    .sidebar-bottom {
+      margin-top: auto;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,.1);
+    }
+
+    .user-mini {
+      padding: 10px;
+    }
+
+    .user-mini strong,
+    .user-mini span {
+      display: block;
+    }
+
+    .user-mini span {
+      margin-top: 3px;
+      color: rgba(255,255,255,.55);
+      font-size: 12px;
+      word-break: break-word;
+    }
+
+    .main {
+      min-width: 0;
+    }
+
+    .topbar {
+      height: 76px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-family: "Manrope", sans-serif;
+      font-size: 24px;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .content {
+      padding: 28px;
+    }
+
+    .welcome-card {
+      background:
+        linear-gradient(110deg, rgba(9,39,30,.96), rgba(19,60,47,.82)),
+        url("https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=1500&q=80")
+          center/cover;
+      color: white;
+      border-radius: var(--radius-lg);
+      padding: 34px;
+      margin-bottom: 22px;
+    }
+
+    .welcome-card h2 {
+      margin: 10px 0 8px;
+      font-family: "Manrope", sans-serif;
+      font-size: 36px;
+    }
+
+    .welcome-card p {
+      max-width: 700px;
+      margin: 0;
+      color: rgba(255,255,255,.7);
+      line-height: 1.8;
+    }
+
+    .quick-links {
+      margin-top: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .stat {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 22px;
+    }
+
+    .stat i {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+    }
+
+    .stat strong {
+      display: block;
+      font-family: "Manrope", sans-serif;
+      font-size: 30px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .panel {
+      margin-bottom: 22px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: 0 8px 24px rgba(23,32,28,.05);
+    }
+
+    .panel-head {
+      padding: 20px 22px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      font-family: "Manrope", sans-serif;
+      font-size: 20px;
+    }
+
+    .panel-body {
+      padding: 22px;
+    }
+
+    .favourite-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 16px;
+    }
+
+    .favourite-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      background: white;
+    }
+
+    .favourite-media {
+      aspect-ratio: 16/9;
+      background: var(--surface-alt);
+      overflow: hidden;
+    }
+
+    .favourite-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .favourite-body {
+      padding: 16px;
+    }
+
+    .favourite-body h3 {
+      margin: 0 0 6px;
+      font-family: "Manrope", sans-serif;
+      font-size: 18px;
+    }
+
+    .favourite-body p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .favourite-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .review-card,
+    .notification-card {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .review-card:last-child,
+    .notification-card:last-child {
+      border-bottom: 0;
+    }
+
+    .review-top,
+    .notification-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: start;
+    }
+
+    .review-card h3,
+    .notification-card h3 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .review-card p,
+    .notification-card p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .stars {
+      color: var(--accent);
+      letter-spacing: 2px;
+      white-space: nowrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .badge-unread {
+      background: #fff2cf;
+      color: #8c6200;
+    }
+
+    .badge-read {
+      background: #edf0ee;
+      color: #59625e;
+    }
+
+    .empty {
+      padding: 50px 20px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .empty i {
+      display: block;
+      margin-bottom: 12px;
+      color: var(--primary);
+      font-size: 34px;
+    }
+
+    .table-wrap {
+      overflow: auto;
+    }
+
+    .table {
+      width: 100%;
+      min-width: 680px;
+      border-collapse: collapse;
+    }
+
+    .table th,
+    .table td {
+      padding: 14px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    .table th {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .avatar-uploader {
+      display: grid;
+      grid-template-columns: 112px 1fr;
+      gap: 20px;
+      align-items: center;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: #f8faf8;
+    }
+
+    .avatar-preview {
+      width: 112px;
+      height: 112px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid white;
+      box-shadow: var(--shadow-sm);
+      background: var(--primary-soft);
+      display: grid;
+      place-items: center;
+      color: var(--primary);
+      font-size: 34px;
+      font-weight: 800;
+    }
+
+    .avatar-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .upload-copy {
+      display: grid;
+      gap: 10px;
+    }
+
+    .upload-copy small {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .file-picker {
+      position: relative;
+      display: inline-flex;
+      width: fit-content;
+    }
+
+    .file-picker input {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .upload-progress {
+      display: none;
+      height: 8px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e4e9e5;
+    }
+
+    .upload-progress.show {
+      display: block;
+    }
+
+    .upload-progress span {
+      display: block;
+      width: 45%;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--primary);
+      animation: uploadMove 1s ease-in-out infinite alternate;
+    }
+
+    @keyframes uploadMove {
+      from { transform: translateX(-25%); }
+      to { transform: translateX(150%); }
+    }
+
+    .mobile-menu {
+      display: none;
+      width: 44px;
+      padding: 0;
+    }
+
+    .overlay {
+      display: none;
+    }
+
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 5000;
+      width: min(360px, calc(100% - 40px));
+      border-radius: 14px;
+      background: #16201b;
+      color: white;
+      padding: 15px 18px;
+      box-shadow: var(--shadow-md);
+      opacity: 0;
+      transform: translateY(22px);
+      pointer-events: none;
+      transition: .2s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1050px) {
+      .portal {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: fixed;
+        left: -290px;
+        width: 275px;
+        transition: .25s ease;
+      }
+
+      .sidebar.open {
+        left: 0;
+      }
+
+      .overlay.show {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 1500;
+        background: rgba(0,0,0,.45);
+      }
+
+      .mobile-menu {
+        display: inline-flex;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, minmax(0,1fr));
+      }
+
+      .favourite-grid {
+        grid-template-columns: repeat(2, minmax(0,1fr));
+      }
+
+      .auth-screen {
+        grid-template-columns: 1fr;
+      }
+
+      .auth-visual {
+        display: none;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .content {
+        padding: 18px;
+      }
+
+      .topbar {
+        padding: 0 16px;
+      }
+
+      .topbar h1 {
+        font-size: 19px;
+      }
+
+      .top-actions .btn-primary {
+        display: none;
+      }
+
+      .stats,
+      .favourite-grid,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .avatar-uploader {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        text-align: center;
+      }
+
+      .upload-copy {
+        justify-items: center;
+      }
+
+      .panel-head,
+      .review-top,
+      .notification-top {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .auth-form-wrap {
+        padding: 20px;
+      }
+
+      .welcome-card {
+        padding: 26px;
+      }
+
+      .welcome-card h2 {
+        font-size: 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <section class="auth-screen" id="authScreen">
+    <div class="auth-visual">
+      <div>
+        <span class="eyebrow">Customer Portal</span>
+        <h1>Your Mbombela favourites in one place.</h1>
+        <p>
+          Save local businesses and places, manage your reviews, receive updates and discover more of Mbombela.
+        </p>
+      </div>
+    </div>
+
+    <div class="auth-form-wrap">
+      <div class="auth-card">
+        <h2>Welcome</h2>
+        <p>Sign in or create your free Mbombela Connect account.</p>
+
+        <div class="tabs">
+          <button class="active" id="loginTab" type="button">Sign in</button>
+          <button id="registerTab" type="button">Register</button>
+        </div>
+
+        <form id="loginForm" class="form-grid">
+          <div class="field full">
+            <label>Email</label>
+            <input id="loginEmail" type="email" required />
+          </div>
+
+          <div class="field full">
+            <label>Password</label>
+            <input id="loginPassword" type="password" required minlength="6" />
+          </div>
+
+          <div class="field full">
+            <button class="btn btn-primary" type="submit">Sign in</button>
+          </div>
+        </form>
+
+        <form id="registerForm" class="form-grid hidden">
+          <div class="field full">
+            <label>Full name</label>
+            <input id="registerName" required />
+          </div>
+
+          <div class="field full">
+            <label>Phone number</label>
+            <input id="registerPhone" />
+          </div>
+
+          <div class="field full">
+            <label>Email</label>
+            <input id="registerEmail" type="email" required />
+          </div>
+
+          <div class="field full">
+            <label>Password</label>
+            <input id="registerPassword" type="password" required minlength="6" />
+          </div>
+
+          <div class="field full">
+            <button class="btn btn-primary" type="submit">Create account</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div class="portal hidden" id="portal">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <span class="brand-mark">
+          <i class="fa-solid fa-location-dot"></i>
+        </span>
+        <span class="brand-copy">
+          <strong>Mbombela Connect</strong>
+          <span>Customer Portal</span>
+        </span>
+      </div>
+
+      <nav class="nav">
+        <button class="active" data-view="dashboard">
+          <i class="fa-solid fa-house"></i>
+          Dashboard
+        </button>
+
+        <button data-view="favourites">
+          <i class="fa-solid fa-heart"></i>
+          Favourites
+        </button>
+
+        <button data-view="reviews">
+          <i class="fa-solid fa-star"></i>
+          My Reviews
+        </button>
+
+        <button data-view="notifications">
+          <i class="fa-solid fa-bell"></i>
+          Notifications
+        </button>
+
+        <button data-view="profile">
+          <i class="fa-solid fa-user"></i>
+          Profile
+        </button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="user-mini">
+          <strong id="sidebarName">Customer</strong>
+          <span id="sidebarEmail">customer@example.com</span>
+        </div>
+
+        <button class="btn btn-outline" id="logoutBtn" style="width:100%">
+          Sign out
+        </button>
+      </div>
+    </aside>
+
+    <div class="overlay" id="overlay"></div>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="btn btn-outline mobile-menu" id="menuBtn" type="button">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <h1 id="pageTitle">Dashboard</h1>
+        </div>
+
+        <div class="top-actions">
+          <a class="btn btn-outline" href="index.html">
+            <i class="fa-solid fa-arrow-left"></i>
+            Website
+          </a>
+
+          <a class="btn btn-primary" href="explore.html">
+            <i class="fa-solid fa-compass"></i>
+            Explore
+          </a>
+        </div>
+      </header>
+
+      <div class="content">
+        <section id="view-dashboard">
+          <div class="welcome-card">
+            <span class="eyebrow">Welcome back</span>
+            <h2 id="welcomeName">Discover more of Mbombela.</h2>
+            <p>
+              Your saved businesses, attractions, accommodation and local updates are available from this dashboard.
+            </p>
+
+            <div class="quick-links">
+              <a href="businesses.html" class="btn btn-accent">
+                <i class="fa-solid fa-store"></i>
+                Browse businesses
+              </a>
+
+              <a href="events.html" class="btn btn-outline">
+                <i class="fa-regular fa-calendar"></i>
+                Find events
+              </a>
+
+              <a href="explore.html" class="btn btn-outline">
+                <i class="fa-solid fa-map-location-dot"></i>
+                Explore places
+              </a>
+            </div>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <i class="fa-solid fa-heart"></i>
+              <strong id="statFavourites">0</strong>
+              <span>Saved favourites</span>
+            </div>
+
+            <div class="stat">
+              <i class="fa-solid fa-star"></i>
+              <strong id="statReviews">0</strong>
+              <span>Reviews submitted</span>
+            </div>
+
+            <div class="stat">
+              <i class="fa-solid fa-bell"></i>
+              <strong id="statNotifications">0</strong>
+              <span>Unread notifications</span>
+            </div>
+
+            <div class="stat">
+              <i class="fa-solid fa-user-check"></i>
+              <strong id="statVerified">No</strong>
+              <span>Verified profile</span>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Recently saved</h2>
+              <button class="btn btn-outline" type="button" data-view-jump="favourites">
+                View all
+              </button>
+            </div>
+            <div class="panel-body" id="recentFavourites"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Latest notifications</h2>
+              <button class="btn btn-outline" type="button" data-view-jump="notifications">
+                View all
+              </button>
+            </div>
+            <div class="panel-body" id="recentNotifications"></div>
+          </div>
+        </section>
+
+        <section id="view-favourites" class="hidden">
+          <div class="panel">
+            <div class="panel-head">
+              <h2>My favourites</h2>
+              <a class="btn btn-primary" href="businesses.html">
+                <i class="fa-solid fa-plus"></i>
+                Discover more
+              </a>
+            </div>
+
+            <div class="panel-body">
+              <div class="favourite-grid" id="favouriteGrid"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-reviews" class="hidden">
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Write a review</h2>
+            </div>
+
+            <div class="panel-body">
+              <form id="reviewForm" class="form-grid">
+                <div class="field">
+                  <label>Business</label>
+                  <select id="reviewBusiness" required>
+                    <option value="">Choose a business</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label>Rating</label>
+                  <select id="reviewRating" required>
+                    <option value="">Choose rating</option>
+                    <option value="5">5 - Excellent</option>
+                    <option value="4">4 - Very good</option>
+                    <option value="3">3 - Good</option>
+                    <option value="2">2 - Fair</option>
+                    <option value="1">1 - Poor</option>
+                  </select>
+                </div>
+
+                <div class="field full">
+                  <label>Comment</label>
+                  <textarea id="reviewComment" required></textarea>
+                </div>
+
+                <div class="field full">
+                  <button class="btn btn-primary" type="submit">
+                    Submit review
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <h2>My submitted reviews</h2>
+            </div>
+            <div class="panel-body" id="reviewList"></div>
+          </div>
+        </section>
+
+        <section id="view-notifications" class="hidden">
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Notifications</h2>
+              <button class="btn btn-outline" id="markAllRead" type="button">
+                Mark all as read
+              </button>
+            </div>
+
+            <div class="panel-body" id="notificationList"></div>
+          </div>
+        </section>
+
+        <section id="view-profile" class="hidden">
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Personal information</h2>
+            </div>
+
+            <div class="panel-body">
+              <form id="profileForm" class="form-grid">
+                <div class="field">
+                  <label>Full name</label>
+                  <input id="profileName" required />
+                </div>
+
+                <div class="field">
+                  <label>Phone number</label>
+                  <input id="profilePhone" />
+                </div>
+
+                <div class="field">
+                  <label>Email</label>
+                  <input id="profileEmail" disabled />
+                </div>
+
+                <div class="field">
+                  <label>City</label>
+                  <input id="profileCity" placeholder="Mbombela" />
+                </div>
+
+                <div class="field full">
+                  <label>Profile picture</label>
+
+                  <div class="avatar-uploader">
+                    <div class="avatar-preview" id="avatarPreview">
+                      <i class="fa-solid fa-user"></i>
+                    </div>
+
+                    <div class="upload-copy">
+                      <strong>Upload a profile picture</strong>
+                      <small>
+                        JPG, PNG or WebP only. Maximum file size: 5 MB.
+                        A square picture gives the best result.
+                      </small>
+
+                      <label class="file-picker">
+                        <span class="btn btn-outline">
+                          <i class="fa-solid fa-camera"></i>
+                          Choose picture
+                        </span>
+                        <input
+                          id="profileAvatarFile"
+                          type="file"
+                          accept="image/jpeg,image/png,image/webp"
+                        />
+                      </label>
+
+                      <div class="upload-progress" id="avatarUploadProgress">
+                        <span></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="field full">
+                  <button class="btn btn-primary" type="submit">
+                    Save profile
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    const SUPABASE_URL =
+      "https://aiwkouqlkcvldeqwhcso.supabase.co";
+
+    const SUPABASE_ANON_KEY =
+      "sb_publishable_gNz9sA61ZME7SQB-Y5qTjQ_nQ-Qpj39";
+
+    const db = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY,
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true,
+
+          /*
+            IMPORTANT:
+            Customer Portal uses its own browser storage key.
+            It will no longer automatically reuse the Admin Portal session.
+          */
+          storageKey: "mbombela-connect-customer-auth"
+        }
+      }
+    );
+
+    const DEFAULT_IMAGE =
+      "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=1200&q=80";
+
+    let user = null;
+    let profile = null;
+    let favourites = [];
+    let reviews = [];
+    let notifications = [];
+    let businesses = [];
+
+    const $ = selector => document.querySelector(selector);
+
+    function escapeHTML(value = "") {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function safeURL(value) {
+      if (!value) return "#";
+
+      try {
+        const url = new URL(value, window.location.origin);
+
+        if (!["http:", "https:"].includes(url.protocol)) return "#";
+
+        return url.href;
+      } catch {
+        return "#";
+      }
+    }
+
+    function showToast(message) {
+      const toast = $("#toast");
+
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      clearTimeout(showToast.timer);
+
+      showToast.timer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2800);
+    }
+
+    function showAuth() {
+      $("#authScreen").classList.remove("hidden");
+      $("#portal").classList.add("hidden");
+    }
+
+    function showPortal() {
+      $("#authScreen").classList.add("hidden");
+      $("#portal").classList.remove("hidden");
+    }
+
+    function switchView(name) {
+      document
+        .querySelectorAll("[id^='view-']")
+        .forEach(view => view.classList.add("hidden"));
+
+      $(`#view-${name}`).classList.remove("hidden");
+
+      document.querySelectorAll(".nav button").forEach(button => {
+        button.classList.toggle(
+          "active",
+          button.dataset.view === name
+        );
+      });
+
+      $("#pageTitle").textContent = {
+        dashboard: "Dashboard",
+        favourites: "Favourites",
+        reviews: "My Reviews",
+        notifications: "Notifications",
+        profile: "Profile"
+      }[name];
+
+      $("#sidebar").classList.remove("open");
+      $("#overlay").classList.remove("show");
+    }
+
+    function renderStats() {
+      const unread = notifications.filter(item => !item.is_read).length;
+
+      $("#statFavourites").textContent = favourites.length;
+      $("#statReviews").textContent = reviews.length;
+      $("#statNotifications").textContent = unread;
+      $("#statVerified").textContent =
+        profile?.is_verified ? "Yes" : "No";
+    }
+
+    function getFavouriteDetails(item) {
+      if (item.businesses) {
+        return {
+          type: "Business",
+          name: item.businesses.name,
+          description:
+            item.businesses.short_description ||
+            item.businesses.description ||
+            "Local business in Mbombela.",
+          image:
+            item.businesses.cover_url ||
+            item.businesses.logo_url ||
+            DEFAULT_IMAGE,
+          url: "businesses.html"
+        };
+      }
+
+      if (item.tourism_places) {
+        return {
+          type: "Tourism place",
+          name: item.tourism_places.name,
+          description:
+            item.tourism_places.short_description ||
+            item.tourism_places.description ||
+            "Discover this local place.",
+          image:
+            item.tourism_places.cover_url ||
+            DEFAULT_IMAGE,
+          url: "explore.html"
+        };
+      }
+
+      if (item.accommodations) {
+        return {
+          type: "Accommodation",
+          name: item.accommodations.name,
+          description:
+            item.accommodations.short_description ||
+            item.accommodations.description ||
+            "Accommodation in Mbombela.",
+          image:
+            item.accommodations.cover_url ||
+            DEFAULT_IMAGE,
+          url: "accommodation.html"
+        };
+      }
+
+      if (item.events) {
+        return {
+          type: "Event",
+          name: item.events.title,
+          description:
+            item.events.short_description ||
+            item.events.description ||
+            "Upcoming event in Mbombela.",
+          image:
+            item.events.poster_url ||
+            DEFAULT_IMAGE,
+          url: "events.html"
+        };
+      }
+
+      return {
+        type: "Saved item",
+        name: "Saved Mbombela item",
+        description: "This saved item is no longer publicly available.",
+        image: DEFAULT_IMAGE,
+        url: "index.html"
+      };
+    }
+
+    function renderFavourites() {
+      if (!favourites.length) {
+        $("#favouriteGrid").innerHTML = `
+          <div class="empty" style="grid-column:1/-1">
+            <i class="fa-regular fa-heart"></i>
+            You have not saved any favourites yet.
+          </div>
+        `;
+
+        $("#recentFavourites").innerHTML = `
+          <div class="empty">
+            <i class="fa-regular fa-heart"></i>
+            Your saved places and businesses will appear here.
+          </div>
+        `;
+        return;
+      }
+
+      const cards = favourites.map(item => {
+        const details = getFavouriteDetails(item);
+
+        return `
+          <article class="favourite-card">
+            <div class="favourite-media">
+              <img
+                src="${safeURL(details.image)}"
+                alt="${escapeHTML(details.name)}"
+                onerror="this.src='${DEFAULT_IMAGE}'"
+              />
+            </div>
+
+            <div class="favourite-body">
+              <span class="badge badge-read">
+                ${escapeHTML(details.type)}
+              </span>
+
+              <h3>${escapeHTML(details.name)}</h3>
+              <p>${escapeHTML(details.description)}</p>
+
+              <div class="favourite-actions">
+                <a class="btn btn-primary" href="${details.url}">
+                  View
+                </a>
+
+                <button
+                  class="btn btn-danger"
+                  type="button"
+                  onclick="removeFavourite('${escapeHTML(item.id)}')"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      $("#favouriteGrid").innerHTML = cards;
+
+      $("#recentFavourites").innerHTML =
+        `<div class="favourite-grid">${cards
+          .split("</article>")
+          .slice(0, 3)
+          .filter(Boolean)
+          .map(card => card + "</article>")
+          .join("")}</div>`;
+    }
+
+    function renderReviews() {
+      if (!reviews.length) {
+        $("#reviewList").innerHTML = `
+          <div class="empty">
+            <i class="fa-regular fa-star"></i>
+            You have not submitted any reviews yet.
+          </div>
+        `;
+        return;
+      }
+
+      $("#reviewList").innerHTML = reviews.map(review => `
+        <article class="review-card">
+          <div class="review-top">
+            <div>
+              <h3>${escapeHTML(review.businesses?.name || "Business")}</h3>
+              <span style="color:var(--muted);font-size:12px">
+                ${new Date(review.created_at).toLocaleDateString("en-ZA")}
+              </span>
+            </div>
+
+            <span class="stars">
+              ${"★".repeat(Number(review.rating || 0))}
+            </span>
+          </div>
+
+          <p>${escapeHTML(review.comment || "No comment")}</p>
+
+          <div style="margin-top:12px">
+            <button
+              class="btn btn-danger"
+              type="button"
+              onclick="deleteReview('${escapeHTML(review.id)}')"
+            >
+              Delete review
+            </button>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function renderNotifications() {
+      if (!notifications.length) {
+        const empty = `
+          <div class="empty">
+            <i class="fa-regular fa-bell"></i>
+            You have no notifications yet.
+          </div>
+        `;
+
+        $("#notificationList").innerHTML = empty;
+        $("#recentNotifications").innerHTML = empty;
+        return;
+      }
+
+      const items = notifications.map(item => `
+        <article class="notification-card">
+          <div class="notification-top">
+            <div>
+              <h3>${escapeHTML(item.title || "Mbombela Connect update")}</h3>
+              <span style="font-size:12px;color:var(--muted)">
+                ${new Date(item.created_at).toLocaleString("en-ZA")}
+              </span>
+            </div>
+
+            <span class="badge ${item.is_read ? "badge-read" : "badge-unread"}">
+              ${item.is_read ? "Read" : "New"}
+            </span>
+          </div>
+
+          <p>${escapeHTML(item.message || "")}</p>
+
+          ${
+            !item.is_read
+              ? `
+                <div style="margin-top:12px">
+                  <button
+                    class="btn btn-outline"
+                    type="button"
+                    onclick="markNotificationRead('${escapeHTML(item.id)}')"
+                  >
+                    Mark as read
+                  </button>
+                </div>
+              `
+              : ""
+          }
+        </article>
+      `).join("");
+
+      $("#notificationList").innerHTML = items;
+
+      $("#recentNotifications").innerHTML =
+        notifications
+          .slice(0, 3)
+          .map(item => `
+            <article class="notification-card">
+              <div class="notification-top">
+                <h3>${escapeHTML(item.title || "Mbombela Connect update")}</h3>
+                <span class="badge ${item.is_read ? "badge-read" : "badge-unread"}">
+                  ${item.is_read ? "Read" : "New"}
+                </span>
+              </div>
+              <p>${escapeHTML(item.message || "")}</p>
+            </article>
+          `)
+          .join("");
+    }
+
+    function renderAvatarPreview(url = "") {
+      const preview = $("#avatarPreview");
+
+      if (!url) {
+        preview.innerHTML = '<i class="fa-solid fa-user"></i>';
+        return;
+      }
+
+      preview.innerHTML = `
+        <img
+          src="${safeURL(url)}"
+          alt="Profile picture"
+          onerror="this.parentElement.innerHTML='<i class=&quot;fa-solid fa-user&quot;></i>'"
+        />
+      `;
+    }
+
+    function validateAvatarFile(file) {
+      const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+      const maximumSize = 5 * 1024 * 1024;
+
+      if (!allowedTypes.includes(file.type)) {
+        throw new Error("Please choose a JPG, PNG or WebP image.");
+      }
+
+      if (file.size > maximumSize) {
+        throw new Error("The profile picture must be smaller than 5 MB.");
+      }
+    }
+
+    async function uploadAvatar(file) {
+      validateAvatarFile(file);
+
+      const extension =
+        file.name.split(".").pop()?.toLowerCase() ||
+        file.type.split("/").pop() ||
+        "jpg";
+
+      const filePath = `${user.id}/avatar-${Date.now()}.${extension}`;
+
+      $("#avatarUploadProgress").classList.add("show");
+
+      try {
+        const { error: uploadError } = await db.storage
+          .from("avatars")
+          .upload(filePath, file, {
+            cacheControl: "3600",
+            upsert: false,
+            contentType: file.type
+          });
+
+        if (uploadError) throw uploadError;
+
+        const { data } = db.storage
+          .from("avatars")
+          .getPublicUrl(filePath);
+
+        if (!data?.publicUrl) {
+          throw new Error("The uploaded picture URL could not be created.");
+        }
+
+        return data.publicUrl;
+      } finally {
+        $("#avatarUploadProgress").classList.remove("show");
+      }
+    }
+
+    async function loadProfile() {
+      const { data, error } = await db
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (error) {
+        showToast(error.message);
+        return;
+      }
+
+      profile = data;
+
+      $("#sidebarName").textContent =
+        profile?.full_name || user.email;
+
+      $("#sidebarEmail").textContent = user.email;
+
+      $("#welcomeName").textContent =
+        profile?.full_name
+          ? `Welcome, ${profile.full_name}.`
+          : "Discover more of Mbombela.";
+
+      $("#profileName").value = profile?.full_name || "";
+      $("#profilePhone").value = profile?.phone || "";
+      $("#profileEmail").value = user.email || "";
+      $("#profileCity").value = profile?.city || "Mbombela";
+      renderAvatarPreview(profile?.avatar_url || "");
+    }
+
+    async function loadBusinesses() {
+      const { data, error } = await db
+        .from("businesses")
+        .select("id,name")
+        .eq("status", "approved")
+        .eq("is_published", true)
+        .order("name");
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      businesses = data || [];
+
+      $("#reviewBusiness").innerHTML = `
+        <option value="">Choose a business</option>
+        ${businesses
+          .map(
+            business => `
+              <option value="${business.id}">
+                ${escapeHTML(business.name)}
+              </option>
+            `
+          )
+          .join("")}
+      `;
+    }
+
+    async function loadFavourites() {
+      const { data, error } = await db
+        .from("favourites")
+        .select(`
+          id,
+          user_id,
+          business_id,
+          tourism_place_id,
+          accommodation_id,
+          event_id,
+          created_at,
+          businesses (
+            id,
+            name,
+            short_description,
+            description,
+            cover_url,
+            logo_url
+          ),
+          tourism_places (
+            id,
+            name,
+            short_description,
+            description,
+            cover_url
+          ),
+          accommodations (
+            id,
+            name,
+            short_description,
+            description,
+            cover_url
+          ),
+          events (
+            id,
+            title,
+            short_description,
+            description,
+            poster_url
+          )
+        `)
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error(error);
+        favourites = [];
+      } else {
+        favourites = data || [];
+      }
+
+      renderFavourites();
+    }
+
+    async function loadReviews() {
+      const { data, error } = await db
+        .from("reviews")
+        .select(`
+          id,
+          business_id,
+          rating,
+          comment,
+          created_at,
+          businesses (
+            id,
+            name
+          )
+        `)
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error(error);
+        reviews = [];
+      } else {
+        reviews = data || [];
+      }
+
+      renderReviews();
+    }
+
+    async function loadNotifications() {
+      const { data, error } = await db
+        .from("notifications")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error(error);
+        notifications = [];
+      } else {
+        notifications = data || [];
+      }
+
+      renderNotifications();
+    }
+
+    async function loadAll() {
+      await loadProfile();
+
+      await Promise.all([
+        loadBusinesses(),
+        loadFavourites(),
+        loadReviews(),
+        loadNotifications()
+      ]);
+
+      renderStats();
+    }
+
+    async function init() {
+      const {
+        data: { session }
+      } = await db.auth.getSession();
+
+      if (!session) {
+        showAuth();
+        return;
+      }
+
+      user = session.user;
+
+      const { data: existingProfile, error: profileError } = await db
+        .from("profiles")
+        .select("role,is_active")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (profileError) {
+        console.error("Profile role check failed:", profileError);
+        await db.auth.signOut();
+        showAuth();
+        showToast("Your account profile could not be verified.");
+        return;
+      }
+
+      if (existingProfile?.is_active === false) {
+        await db.auth.signOut();
+        showAuth();
+        showToast("Your account is currently disabled.");
+        return;
+      }
+
+      const customerRoles = ["user", "customer"];
+      const currentRole = String(existingProfile?.role || "").toLowerCase();
+
+      if (!customerRoles.includes(currentRole)) {
+        await db.auth.signOut();
+        showAuth();
+
+        if (["admin", "staff", "business_owner"].includes(currentRole)) {
+          showToast(
+            "This is not a customer account. Please sign in with a customer account."
+          );
+        } else {
+          showToast("This account does not have customer portal access.");
+        }
+
+        return;
+      }
+
+      showPortal();
+      await loadAll();
+    }
+
+    $("#loginTab").addEventListener("click", () => {
+      $("#loginTab").classList.add("active");
+      $("#registerTab").classList.remove("active");
+      $("#loginForm").classList.remove("hidden");
+      $("#registerForm").classList.add("hidden");
+    });
+
+    $("#registerTab").addEventListener("click", () => {
+      $("#registerTab").classList.add("active");
+      $("#loginTab").classList.remove("active");
+      $("#registerForm").classList.remove("hidden");
+      $("#loginForm").classList.add("hidden");
+    });
+
+    $("#loginForm").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      const { error } = await db.auth.signInWithPassword({
+        email: $("#loginEmail").value.trim(),
+        password: $("#loginPassword").value
+      });
+
+      if (error) {
+        showToast(error.message);
+        return;
+      }
+
+      await init();
+    });
+
+    $("#registerForm").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      const fullName = $("#registerName").value.trim();
+      const phone = $("#registerPhone").value.trim();
+      const email = $("#registerEmail").value.trim();
+      const password = $("#registerPassword").value;
+
+      const { data, error } = await db.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: fullName,
+            phone,
+            requested_role: "customer"
+          }
+        }
+      });
+
+      if (error) {
+        showToast(error.message);
+        return;
+      }
+
+      if (data.user) {
+        await db
+          .from("profiles")
+          .update({
+            full_name: fullName,
+            phone,
+            role: "customer"
+          })
+          .eq("id", data.user.id);
+      }
+
+      showToast(
+        "Account created. Check your email if email confirmation is enabled."
+      );
+
+      $("#loginEmail").value = email;
+      $("#loginTab").click();
+    });
+
+    $("#logoutBtn").addEventListener("click", async () => {
+      await db.auth.signOut();
+      location.reload();
+    });
+
+    document.querySelectorAll(".nav button").forEach(button => {
+      button.addEventListener("click", () => {
+        switchView(button.dataset.view);
+      });
+    });
+
+    document.querySelectorAll("[data-view-jump]").forEach(button => {
+      button.addEventListener("click", () => {
+        switchView(button.dataset.viewJump);
+      });
+    });
+
+    $("#menuBtn").addEventListener("click", () => {
+      $("#sidebar").classList.add("open");
+      $("#overlay").classList.add("show");
+      document.body.classList.add("menu-open");
+    });
+
+    $("#overlay").addEventListener("click", () => {
+      $("#sidebar").classList.remove("open");
+      $("#overlay").classList.remove("show");
+      document.body.classList.remove("menu-open");
+    });
+
+    $("#profileAvatarFile").addEventListener("change", event => {
+      const file = event.target.files?.[0];
+
+      if (!file) return;
+
+      try {
+        validateAvatarFile(file);
+        renderAvatarPreview(URL.createObjectURL(file));
+      } catch (error) {
+        event.target.value = "";
+        renderAvatarPreview(profile?.avatar_url || "");
+        showToast(error.message);
+      }
+    });
+
+    $("#profileForm").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      const saveButton = event.submitter;
+      const avatarFile = $("#profileAvatarFile").files?.[0];
+
+      if (saveButton) {
+        saveButton.disabled = true;
+        saveButton.innerHTML =
+          '<i class="fa-solid fa-spinner fa-spin"></i> Saving profile...';
+      }
+
+      try {
+        let avatarUrl = profile?.avatar_url || null;
+
+        if (avatarFile) {
+          avatarUrl = await uploadAvatar(avatarFile);
+        }
+
+        const { error } = await db
+          .from("profiles")
+          .update({
+            full_name: $("#profileName").value.trim(),
+            phone: $("#profilePhone").value.trim(),
+            city: $("#profileCity").value.trim() || "Mbombela",
+            avatar_url: avatarUrl
+          })
+          .eq("id", user.id);
+
+        if (error) throw error;
+
+        $("#profileAvatarFile").value = "";
+        showToast("Profile updated successfully.");
+
+        await loadProfile();
+        renderStats();
+      } catch (error) {
+        console.error("Profile update failed:", error);
+        showToast(error.message || "The profile could not be updated.");
+      } finally {
+        if (saveButton) {
+          saveButton.disabled = false;
+          saveButton.innerHTML = "Save profile";
+        }
+      }
+    });
+
+    $("#reviewForm").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      const businessId = $("#reviewBusiness").value;
+      const rating = Number($("#reviewRating").value);
+      const comment = $("#reviewComment").value.trim();
+
+      const { error } = await db
+        .from("reviews")
+        .insert({
+          user_id: user.id,
+          business_id: businessId,
+          rating,
+          comment,
+          status: "approved"
+        });
+
+      if (error) {
+        showToast(error.message);
+        return;
+      }
+
+      $("#reviewForm").reset();
+      showToast("Review submitted successfully.");
+
+      await loadReviews();
+      renderStats();
+    });
+
+    window.deleteReview = async id => {
+      if (!confirm("Delete this review?")) return;
+
+      const { error } = await db
+        .from("reviews")
+        .delete()
+        .eq("id", id)
+        .eq("user_id", user.id);
+
+      if (error) {
+        showToast(error.message);
+        return;
+      }
+
+      showToast("Review deleted.");
+      await loadReviews();
+      renderStats();
+    };
+
+    window.removeFavourite = async id => {
+      const { error } = await db
+        .from("favourites")
+        .delete()
+        .eq("id", id)
+        .eq("user_id", user.id);
+
+      if (error) {
+        showToast(error.message);
+        return;
+      }
+
+      showToast("Favourite removed.");
+      await loadFavourites();
+      renderStats();
+    };
+
+    window.markNotificationRead = async id => {
+      const { error } = await db
+        .from("notifications")
+        .update({ is_read: true })
+        .eq("id", id)
+        .eq("user_id", user.id);
+
+      if (error) {
+        showToast(error.message);
+        return;
+      }
+
+      await loadNotifications();
+      renderStats();
+    };
+
+    $("#markAllRead").addEventListener("click", async () => {
+      const { error } = await db
+        .from("notifications")
+        .update({ is_read: true })
+        .eq("user_id", user.id)
+        .eq("is_read", false);
+
+      if (error) {
+        showToast(error.message);
+        return;
+      }
+
+      showToast("All notifications marked as read.");
+      await loadNotifications();
+      renderStats();
+    });
+
+    db.auth.onAuthStateChange((_event, session) => {
+      if (!session) showAuth();
+    });
+
+    init();
+  </script>
+</body>
+</html>

@@ -1,0 +1,2313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#133c2f" />
+
+  <title>Mbombela Connect</title>
+  <meta
+    name="description"
+    content="Discover trusted businesses, events, jobs, accommodation, tourism attractions and local opportunities in Mbombela."
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+  />
+
+  <style>
+    :root {
+      --primary: #133c2f;
+      --primary-dark: #09271e;
+      --primary-soft: #e8f0ec;
+      --accent: #e8a823;
+      --accent-dark: #b97c00;
+      --background: #f5f3ed;
+      --surface: #ffffff;
+      --surface-alt: #ede9df;
+      --surface-dark: #17211d;
+      --text: #17201c;
+      --muted: #69736e;
+      --border: #d9ddd8;
+      --danger: #bf3a3a;
+      --success: #23865f;
+      --shadow-sm: 0 8px 24px rgba(23, 32, 28, 0.08);
+      --shadow-md: 0 18px 50px rgba(23, 32, 28, 0.12);
+      --radius-sm: 12px;
+      --radius-md: 20px;
+      --radius-lg: 30px;
+      --container: 1240px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family: "DM Sans", sans-serif;
+      line-height: 1.5;
+    }
+
+    body.menu-open {
+      overflow: hidden;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .container {
+      width: min(calc(100% - 32px), var(--container));
+      margin-inline: auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 220px;
+    }
+
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: var(--primary);
+      color: var(--surface);
+      font-size: 20px;
+    }
+
+    .brand-copy strong,
+    .brand-copy span {
+      display: block;
+    }
+
+    .brand-copy strong {
+      font-family: "Manrope", sans-serif;
+      font-size: 17px;
+      line-height: 1.1;
+    }
+
+    .brand-copy span {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .desktop-nav {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+    }
+
+    .desktop-nav a {
+      color: #34403b;
+      font-weight: 600;
+      font-size: 14px;
+      transition: 0.2s ease;
+    }
+
+    .desktop-nav a:hover {
+      color: var(--primary);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      min-height: 46px;
+      padding: 0 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      font-weight: 700;
+      transition: 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: var(--surface);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: #211700;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-light {
+      background: var(--surface);
+      color: var(--primary-dark);
+    }
+
+    .menu-toggle {
+      width: 46px;
+      padding: 0;
+      display: none;
+    }
+
+    .mobile-menu {
+      position: fixed;
+      inset: 77px 0 0;
+      z-index: 999;
+      background: rgba(9, 39, 30, 0.58);
+      visibility: hidden;
+      opacity: 0;
+      transition: 0.2s ease;
+    }
+
+    .mobile-menu.open {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .mobile-panel {
+      width: min(88%, 380px);
+      height: 100%;
+      background: var(--surface);
+      padding: 24px;
+      transform: translateX(-100%);
+      transition: 0.25s ease;
+    }
+
+    .mobile-menu.open .mobile-panel {
+      transform: translateX(0);
+    }
+
+    .mobile-panel nav {
+      display: grid;
+      gap: 8px;
+    }
+
+    .mobile-panel nav a {
+      padding: 14px 12px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+
+    .mobile-panel nav a:hover {
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: var(--primary-dark);
+      color: white;
+      min-height: 690px;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-media {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(9, 39, 30, 0.96) 0%, rgba(9, 39, 30, 0.82) 52%, rgba(9, 39, 30, 0.34) 100%),
+        url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80")
+          center/cover no-repeat;
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 2;
+      min-height: 690px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.75fr);
+      gap: 70px;
+      align-items: center;
+      padding-block: 90px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 36px;
+      height: 2px;
+      background: currentColor;
+    }
+
+    .hero h1 {
+      margin: 20px 0 20px;
+      font-family: "Manrope", sans-serif;
+      font-size: clamp(46px, 7vw, 82px);
+      line-height: 0.98;
+      max-width: 790px;
+      letter-spacing: -3px;
+    }
+
+    .hero-description {
+      max-width: 650px;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 18px;
+      line-height: 1.8;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 34px;
+    }
+
+    .hero-search {
+      background: var(--surface);
+      color: var(--text);
+      border-radius: var(--radius-lg);
+      padding: 26px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .hero-search h2 {
+      margin: 0 0 6px;
+      font-family: "Manrope", sans-serif;
+      font-size: 24px;
+    }
+
+    .hero-search > p {
+      margin: 0 0 22px;
+      color: var(--muted);
+    }
+
+    .search-form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .field {
+      position: relative;
+    }
+
+    .field i {
+      position: absolute;
+      top: 50%;
+      left: 16px;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      min-height: 54px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+      padding: 0 16px 0 46px;
+      outline: none;
+      color: var(--text);
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(19, 60, 47, 0.1);
+    }
+
+    .search-form .btn {
+      min-height: 54px;
+    }
+
+    .quick-links {
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+    }
+
+    .quick-link {
+      min-height: 105px;
+      padding: 18px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 9px;
+      border-right: 1px solid var(--border);
+      transition: 0.2s ease;
+    }
+
+    .quick-link:first-child {
+      border-left: 1px solid var(--border);
+    }
+
+    .quick-link:hover {
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+    .quick-link i {
+      font-size: 22px;
+    }
+
+    .quick-link strong {
+      font-size: 14px;
+    }
+
+    .section {
+      padding: 92px 0;
+    }
+
+    .section.alt {
+      background: var(--surface);
+    }
+
+    .section.dark {
+      background: var(--surface-dark);
+      color: white;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 28px;
+      margin-bottom: 34px;
+    }
+
+    .section-title-wrap {
+      max-width: 730px;
+    }
+
+    .section-title-wrap h2 {
+      margin: 12px 0 10px;
+      font-family: "Manrope", sans-serif;
+      font-size: clamp(32px, 4vw, 50px);
+      line-height: 1.08;
+      letter-spacing: -1.8px;
+    }
+
+    .section-title-wrap p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.75;
+    }
+
+    .dark .section-title-wrap p {
+      color: rgba(255,255,255,.68);
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .category-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: 0.2s ease;
+    }
+
+    .category-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .category-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 22px;
+    }
+
+    .category-card h3 {
+      margin: 26px 0 8px;
+      font-family: "Manrope", sans-serif;
+      font-size: 20px;
+    }
+
+    .category-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .category-card .arrow {
+      margin-top: 18px;
+      color: var(--primary);
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .content-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: 0.2s ease;
+      min-width: 0;
+    }
+
+    .content-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .content-card-media {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      background: var(--surface-alt);
+      overflow: hidden;
+    }
+
+    .content-card-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: 0.35s ease;
+    }
+
+    .content-card:hover .content-card-media img {
+      transform: scale(1.035);
+    }
+
+    .badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: var(--surface);
+      color: var(--primary-dark);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .content-card-body {
+      padding: 22px;
+    }
+
+    .content-card h3 {
+      margin: 0 0 9px;
+      font-family: "Manrope", sans-serif;
+      font-size: 21px;
+      line-height: 1.25;
+    }
+
+    .content-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+    .meta-list {
+      display: grid;
+      gap: 9px;
+      margin-top: 18px;
+      padding-top: 17px;
+      border-top: 1px solid var(--border);
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: #4d5b55;
+      font-size: 13px;
+    }
+
+    .meta-item i {
+      width: 18px;
+      color: var(--primary);
+    }
+
+    .content-card-footer {
+      margin-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .price {
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .text-link {
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .announcement-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.8fr);
+      gap: 28px;
+    }
+
+    .announcement-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .announcement-item {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius-md);
+      padding: 22px;
+    }
+
+    .announcement-item time {
+      display: block;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .announcement-item h3 {
+      margin: 0 0 7px;
+      font-family: "Manrope", sans-serif;
+      font-size: 20px;
+    }
+
+    .announcement-item p {
+      margin: 0;
+      color: rgba(255,255,255,.68);
+    }
+
+    .newsletter-card {
+      background: var(--accent);
+      color: #211700;
+      border-radius: var(--radius-lg);
+      padding: 34px;
+      align-self: start;
+    }
+
+    .newsletter-card h3 {
+      margin: 0 0 10px;
+      font-family: "Manrope", sans-serif;
+      font-size: 30px;
+    }
+
+    .newsletter-card p {
+      margin: 0 0 22px;
+      color: rgba(33,23,0,.72);
+    }
+
+    .newsletter-form {
+      display: grid;
+      gap: 10px;
+    }
+
+    .newsletter-form input {
+      min-height: 52px;
+      border: 0;
+      border-radius: 12px;
+      padding: 0 15px;
+      outline: none;
+    }
+
+    .cta {
+      padding: 28px 0 88px;
+    }
+
+    .cta-card {
+      background: var(--primary);
+      color: white;
+      border-radius: var(--radius-lg);
+      padding: 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .cta-card h2 {
+      margin: 0 0 10px;
+      font-family: "Manrope", sans-serif;
+      font-size: clamp(30px, 4vw, 46px);
+    }
+
+    .cta-card p {
+      margin: 0;
+      max-width: 680px;
+      color: rgba(255,255,255,.74);
+    }
+
+    .site-footer {
+      background: #0c1511;
+      color: white;
+      padding: 70px 0 28px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr repeat(3, minmax(150px, 0.6fr));
+      gap: 42px;
+    }
+
+    .footer-brand p {
+      color: rgba(255,255,255,.62);
+      max-width: 430px;
+      line-height: 1.8;
+    }
+
+    .footer-column h4 {
+      margin: 0 0 18px;
+      font-family: "Manrope", sans-serif;
+      font-size: 15px;
+    }
+
+    .footer-column a {
+      display: block;
+      color: rgba(255,255,255,.62);
+      margin: 11px 0;
+      font-size: 14px;
+    }
+
+    .footer-bottom {
+      margin-top: 46px;
+      padding-top: 22px;
+      border-top: 1px solid rgba(255,255,255,.12);
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      color: rgba(255,255,255,.48);
+      font-size: 13px;
+    }
+
+    .socials {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .socials a {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 12px;
+    }
+
+    .state-box {
+      grid-column: 1 / -1;
+      min-height: 220px;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-md);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 28px;
+      background: rgba(255,255,255,.42);
+    }
+
+    .state-box i {
+      display: block;
+      font-size: 28px;
+      margin-bottom: 12px;
+      color: var(--primary);
+    }
+
+    .state-box strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .state-box span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .skeleton {
+      background:
+        linear-gradient(90deg, #eceeea 25%, #f7f8f5 37%, #eceeea 63%);
+      background-size: 400% 100%;
+      animation: shimmer 1.3s infinite;
+      border-radius: 12px;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 100% 0; }
+      100% { background-position: 0 0; }
+    }
+
+    .skeleton-card {
+      height: 390px;
+      border-radius: var(--radius-md);
+    }
+
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 3000;
+      width: min(360px, calc(100% - 40px));
+      padding: 15px 17px;
+      border-radius: 14px;
+      background: var(--surface-dark);
+      color: white;
+      box-shadow: var(--shadow-md);
+      transform: translateY(30px);
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.2s ease;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 1080px) {
+      .desktop-nav {
+        display: none;
+      }
+
+      .menu-toggle {
+        display: inline-flex;
+      }
+
+      .header-actions .btn-outline {
+        display: none;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .hero-search {
+        max-width: 700px;
+      }
+
+      .quick-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .container {
+        width: min(calc(100% - 22px), var(--container));
+      }
+
+      .header-inner {
+        min-height: 68px;
+      }
+
+      .mobile-menu {
+        inset: 69px 0 0;
+      }
+
+      .brand {
+        min-width: 0;
+      }
+
+      .brand-copy span {
+        display: none;
+      }
+
+      .header-actions > .btn-primary {
+        display: none;
+      }
+
+      .hero,
+      .hero-grid {
+        min-height: auto;
+      }
+
+      .hero-grid {
+        padding-block: 72px 58px;
+      }
+
+      .hero h1 {
+        font-size: 49px;
+        letter-spacing: -2px;
+      }
+
+      .hero-description {
+        font-size: 16px;
+      }
+
+      .hero-actions {
+        display: grid;
+      }
+
+      .hero-actions .btn {
+        width: 100%;
+      }
+
+      .hero-search {
+        padding: 22px;
+        border-radius: 22px;
+      }
+
+      .quick-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .quick-link:nth-child(odd) {
+        border-left: 1px solid var(--border);
+      }
+
+      .section {
+        padding: 68px 0;
+      }
+
+      .section-head {
+        align-items: start;
+        flex-direction: column;
+        margin-bottom: 26px;
+      }
+
+      .section-head .btn {
+        width: 100%;
+      }
+
+      .category-grid,
+      .card-grid,
+      .announcement-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .cta-card {
+        padding: 32px 24px;
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .cta-card .btn {
+        width: 100%;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand" aria-label="Mbombela Connect home">
+        <span class="brand-mark">
+          <i class="fa-solid fa-location-dot"></i>
+        </span>
+        <span class="brand-copy">
+          <strong id="brandName">Mbombela Connect</strong>
+          <span id="brandTagline">Discover. Connect. Experience Mbombela.</span>
+        </span>
+      </a>
+
+      <nav class="desktop-nav" aria-label="Primary navigation">
+        <a href="#businesses">Businesses</a>
+        <a href="#events">Events</a>
+        <a href="#jobs">Jobs</a>
+        <a href="#accommodation">Accommodation</a>
+        <a href="#tourism">Explore</a>
+        <a href="#announcements">Updates</a>
+      </nav>
+
+      <div class="header-actions">
+        <a class="btn btn-outline" href="login.html">
+          <i class="fa-regular fa-user"></i>
+          Sign in
+        </a>
+        <a class="btn btn-primary" href="business-portal.html">
+          List your business
+        </a>
+        <button
+          class="btn btn-outline menu-toggle"
+          id="menuToggle"
+          type="button"
+          aria-label="Open menu"
+          aria-expanded="false"
+        >
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <div class="mobile-panel">
+      <nav>
+        <a href="#businesses">Businesses</a>
+        <a href="#events">Events</a>
+        <a href="#jobs">Jobs</a>
+        <a href="#accommodation">Accommodation</a>
+        <a href="#tourism">Explore Mbombela</a>
+        <a href="#announcements">Local updates</a>
+        <a href="login.html">Sign in</a>
+        <a href="register-business.html">List your business</a>
+      </nav>
+    </div>
+  </div>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-media" id="heroMedia"></div>
+
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow" id="heroEyebrow">The city in your hands</span>
+          <h1 id="heroTitle">Everything Mbombela, in one place.</h1>
+          <p class="hero-description" id="heroDescription">
+            Discover trusted local businesses, events, jobs, accommodation and experiences across Mbombela.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#discover" class="btn btn-accent" id="heroPrimaryButton">
+              Explore Mbombela
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <a href="business-portal.html" class="btn btn-light">
+              <i class="fa-solid fa-store"></i>
+              Add your business
+            </a>
+          </div>
+        </div>
+
+        <aside class="hero-search" aria-label="Search Mbombela Connect">
+          <h2>What are you looking for?</h2>
+          <p>Search businesses, jobs, events and places near you.</p>
+
+          <form class="search-form" id="searchForm">
+            <label class="field">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input
+                id="searchInput"
+                type="search"
+                placeholder="e.g. Photographer, restaurant, job"
+                autocomplete="off"
+              />
+            </label>
+
+            <label class="field">
+              <i class="fa-solid fa-layer-group"></i>
+              <select id="searchType">
+                <option value="businesses">Businesses</option>
+                <option value="events">Events</option>
+                <option value="jobs">Jobs</option>
+                <option value="accommodations">Accommodation</option>
+                <option value="tourism_places">Tourism</option>
+              </select>
+            </label>
+
+            <button class="btn btn-primary" type="submit">
+              Search Mbombela
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </form>
+        </aside>
+      </div>
+    </section>
+
+    <section class="quick-links" id="discover">
+      <div class="container quick-grid">
+        <a class="quick-link" href="#businesses">
+          <i class="fa-solid fa-store"></i>
+          <strong>Businesses</strong>
+        </a>
+        <a class="quick-link" href="#events">
+          <i class="fa-regular fa-calendar-days"></i>
+          <strong>Events</strong>
+        </a>
+        <a class="quick-link" href="#jobs">
+          <i class="fa-solid fa-briefcase"></i>
+          <strong>Jobs</strong>
+        </a>
+        <a class="quick-link" href="#accommodation">
+          <i class="fa-solid fa-bed"></i>
+          <strong>Accommodation</strong>
+        </a>
+        <a class="quick-link" href="#tourism">
+          <i class="fa-solid fa-binoculars"></i>
+          <strong>Tourism</strong>
+        </a>
+        <a class="quick-link" href="#announcements">
+          <i class="fa-solid fa-bullhorn"></i>
+          <strong>Local updates</strong>
+        </a>
+      </div>
+    </section>
+
+    <section class="section" id="categories">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-title-wrap">
+            <span class="eyebrow" style="color: var(--primary)">Browse by category</span>
+            <h2>Find trusted services faster</h2>
+            <p>
+              Explore approved businesses by category. Categories are managed from the Mbombela Connect admin portal.
+            </p>
+          </div>
+        </div>
+
+        <div class="category-grid" id="categoryGrid">
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="businesses">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-title-wrap">
+            <span class="eyebrow" style="color: var(--primary)" id="businessEyebrow">Local business</span>
+            <h2 id="businessTitle">Discover trusted businesses</h2>
+            <p id="businessDescription">
+              Explore approved businesses serving Mbombela and surrounding areas.
+            </p>
+          </div>
+          <a class="btn btn-outline" href="businesses.html">
+            View all businesses
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <div class="card-grid" id="businessGrid">
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="events">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-title-wrap">
+            <span class="eyebrow" style="color: var(--primary)" id="eventEyebrow">What is happening</span>
+            <h2 id="eventTitle">Upcoming events</h2>
+            <p id="eventDescription">
+              Find music, church, business, community and lifestyle events.
+            </p>
+          </div>
+          <a class="btn btn-outline" href="events.html">
+            View all events
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <div class="card-grid" id="eventGrid">
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="jobs">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-title-wrap">
+            <span class="eyebrow" style="color: var(--primary)" id="jobEyebrow">Local opportunities</span>
+            <h2 id="jobTitle">Find your next opportunity</h2>
+            <p id="jobDescription">
+              Browse approved job opportunities from employers in and around Mbombela.
+            </p>
+          </div>
+          <a class="btn btn-outline" href="jobs.html">
+            Browse all jobs
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <div class="card-grid" id="jobGrid">
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="accommodation">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-title-wrap">
+            <span class="eyebrow" style="color: var(--primary)">Stay in Mbombela</span>
+            <h2>Accommodation for every journey</h2>
+            <p>
+              Find approved hotels, lodges, guest houses and other places to stay.
+            </p>
+          </div>
+          <a class="btn btn-outline" href="accommodation.html">
+            View accommodation
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <div class="card-grid" id="accommodationGrid">
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="tourism">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-title-wrap">
+            <span class="eyebrow" style="color: var(--primary)" id="tourismEyebrow">Explore Mpumalanga</span>
+            <h2 id="tourismTitle">Experience Mbombela</h2>
+            <p id="tourismDescription">
+              Discover attractions, natural beauty and memorable local experiences.
+            </p>
+          </div>
+          <a class="btn btn-outline" href="explore.html">
+            Start exploring
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <div class="card-grid" id="tourismGrid">
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark" id="announcements">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-title-wrap">
+            <span class="eyebrow">Community information</span>
+            <h2>Mbombela updates</h2>
+            <p>
+              Local announcements, notices, community information and important updates.
+            </p>
+          </div>
+        </div>
+
+        <div class="announcement-layout">
+          <div class="announcement-list" id="announcementList">
+            <div class="announcement-item">
+              <div class="skeleton" style="height: 110px;"></div>
+            </div>
+          </div>
+
+          <aside class="newsletter-card">
+            <h3>Stay connected</h3>
+            <p>
+              Get important Mbombela announcements and platform updates.
+            </p>
+            <form class="newsletter-form" id="newsletterForm">
+              <input type="email" id="newsletterEmail" placeholder="Your email address" required />
+              <button class="btn btn-primary" type="submit">
+                Join the community
+              </button>
+            </form>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <div class="cta-card">
+          <div>
+            <h2>Grow your business in Mbombela</h2>
+            <p>
+              Create your business account, submit your listing and reach people searching for local services.
+            </p>
+          </div>
+          <a class="btn btn-accent" href="business-portal.html">
+            Register your business
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand">
+            <span class="brand-mark" style="background: var(--accent); color: #211700;">
+              <i class="fa-solid fa-location-dot"></i>
+            </span>
+            <span class="brand-copy">
+              <strong id="footerBrandName">Mbombela Connect</strong>
+              <span id="footerBrandTagline">Discover. Connect. Experience Mbombela.</span>
+            </span>
+          </a>
+          <p id="footerDescription">
+            A local discovery platform connecting Mbombela residents, visitors and businesses.
+          </p>
+
+          <div class="socials">
+            <a id="facebookLink" class="hidden" href="#" target="_blank" rel="noopener" aria-label="Facebook">
+              <i class="fa-brands fa-facebook-f"></i>
+            </a>
+            <a id="instagramLink" class="hidden" href="#" target="_blank" rel="noopener" aria-label="Instagram">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a id="tiktokLink" class="hidden" href="#" target="_blank" rel="noopener" aria-label="TikTok">
+              <i class="fa-brands fa-tiktok"></i>
+            </a>
+            <a id="youtubeLink" class="hidden" href="#" target="_blank" rel="noopener" aria-label="YouTube">
+              <i class="fa-brands fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-column">
+          <h4>Discover</h4>
+          <a href="#businesses">Businesses</a>
+          <a href="#events">Events</a>
+          <a href="#jobs">Jobs</a>
+          <a href="#tourism">Tourism</a>
+        </div>
+
+        <div class="footer-column">
+          <h4>For businesses</h4>
+          <a href="register-business.html">Register</a>
+          <a href="business-dashboard.html">Dashboard</a>
+          <a href="advertise.html">Advertise</a>
+          <a href="help.html">Help centre</a>
+        </div>
+
+        <div class="footer-column">
+          <h4>Contact</h4>
+          <a id="footerEmail" href="#">Email unavailable</a>
+          <a id="footerPhone" href="#">Phone unavailable</a>
+          <a id="footerWhatsApp" href="#">WhatsApp unavailable</a>
+          <a id="footerAddress" href="#">Mbombela, Mpumalanga</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© <span id="year"></span> Mbombela Connect. All rights reserved.</span>
+        <span>Built for Mbombela and the wider Mpumalanga community.</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    
+    const SUPABASE_URL = "https://aiwkouqlkcvldeqwhcso.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_gNz9sA61ZME7SQB-Y5qTjQ_nQ-Qpj39";
+
+    const DEFAULT_IMAGE =
+      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80";
+
+    const CATEGORY_ICON_MAP = {
+      "restaurants-food": "fa-utensils",
+      "photography-video": "fa-camera",
+      "home-services": "fa-screwdriver-wrench",
+      "beauty-wellness": "fa-spa",
+      "automotive": "fa-car",
+      "events-entertainment": "fa-music",
+      "professional-services": "fa-briefcase",
+      "retail-shopping": "fa-bag-shopping"
+    };
+
+    let supabaseClient = null;
+
+    const elements = {
+      categoryGrid: document.querySelector("#categoryGrid"),
+      businessGrid: document.querySelector("#businessGrid"),
+      eventGrid: document.querySelector("#eventGrid"),
+      jobGrid: document.querySelector("#jobGrid"),
+      accommodationGrid: document.querySelector("#accommodationGrid"),
+      tourismGrid: document.querySelector("#tourismGrid"),
+      announcementList: document.querySelector("#announcementList"),
+      toast: document.querySelector("#toast")
+    };
+
+    document.querySelector("#year").textContent = new Date().getFullYear();
+
+    function isConfigured() {
+      return (
+        SUPABASE_URL &&
+        SUPABASE_ANON_KEY &&
+        !SUPABASE_URL.includes("PASTE_YOUR") &&
+        !SUPABASE_ANON_KEY.includes("PASTE_YOUR")
+      );
+    }
+
+    function initializeSupabase() {
+      if (!isConfigured()) {
+        showConfigurationState();
+        return false;
+      }
+
+      supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY,
+        {
+          auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+            detectSessionInUrl: true
+          }
+        }
+      );
+
+      return true;
+    }
+
+    function escapeHTML(value = "") {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function safeURL(url) {
+      if (!url) return "#";
+
+      try {
+        const parsed = new URL(url, window.location.origin);
+        if (!["http:", "https:", "mailto:", "tel:"].includes(parsed.protocol)) {
+          return "#";
+        }
+        return parsed.href;
+      } catch {
+        return "#";
+      }
+    }
+
+    function formatDate(dateValue, includeTime = false) {
+      if (!dateValue) return "Date unavailable";
+
+      const date = new Date(dateValue);
+      if (Number.isNaN(date.getTime())) return "Date unavailable";
+
+      return new Intl.DateTimeFormat("en-ZA", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        ...(includeTime ? { hour: "2-digit", minute: "2-digit" } : {})
+      }).format(date);
+    }
+
+    function formatMoney(value) {
+      if (value === null || value === undefined || value === "") {
+        return "Contact for price";
+      }
+
+      return new Intl.NumberFormat("en-ZA", {
+        style: "currency",
+        currency: "ZAR",
+        maximumFractionDigits: 0
+      }).format(Number(value));
+    }
+
+    function truncate(text, max = 130) {
+      const clean = String(text || "").trim();
+      if (!clean) return "More details will be available soon.";
+      return clean.length > max ? clean.slice(0, max).trim() + "…" : clean;
+    }
+
+    function showToast(message) {
+      elements.toast.textContent = message;
+      elements.toast.classList.add("show");
+
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => {
+        elements.toast.classList.remove("show");
+      }, 3200);
+    }
+
+    function emptyState(title, message) {
+      return `
+        <div class="state-box">
+          <div>
+            <i class="fa-regular fa-folder-open"></i>
+            <strong>${escapeHTML(title)}</strong>
+            <span>${escapeHTML(message)}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function errorState(title, message) {
+      return `
+        <div class="state-box">
+          <div>
+            <i class="fa-solid fa-triangle-exclamation" style="color: var(--danger)"></i>
+            <strong>${escapeHTML(title)}</strong>
+            <span>${escapeHTML(message)}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function showConfigurationState() {
+      const message =
+        "Open this file and add your Supabase URL and publishable/anon key inside the script.";
+
+      elements.categoryGrid.innerHTML = errorState("Supabase is not connected", message);
+      elements.businessGrid.innerHTML = errorState("Supabase is not connected", message);
+      elements.eventGrid.innerHTML = errorState("Supabase is not connected", message);
+      elements.jobGrid.innerHTML = errorState("Supabase is not connected", message);
+      elements.accommodationGrid.innerHTML = errorState("Supabase is not connected", message);
+      elements.tourismGrid.innerHTML = errorState("Supabase is not connected", message);
+      elements.announcementList.innerHTML = errorState("Supabase is not connected", message);
+    }
+
+    async function fetchRows(table, queryBuilder) {
+      try {
+        let query = supabaseClient.from(table).select("*");
+        query = queryBuilder ? queryBuilder(query) : query;
+
+        const { data, error } = await query;
+
+        if (error) throw error;
+        return { data: data || [], error: null };
+      } catch (error) {
+        console.error(`Failed to load ${table}:`, error);
+        return { data: [], error };
+      }
+    }
+
+    async function loadSiteSettings() {
+      const { data, error } = await fetchRows("site_settings", query =>
+        query.eq("is_public", true)
+      );
+
+      if (error) return;
+
+      const settings = Object.fromEntries(
+        data.map(item => [item.setting_key, item.setting_value || {}])
+      );
+
+      const identity = settings.site_identity || {};
+      const contact = settings.contact || {};
+      const socials = settings.social_links || {};
+
+      const name = identity.name || "Mbombela Connect";
+      const tagline =
+        identity.tagline || "Discover. Connect. Experience Mbombela.";
+
+      document.title = name;
+
+      document.querySelector("#brandName").textContent = name;
+      document.querySelector("#brandTagline").textContent = tagline;
+      document.querySelector("#footerBrandName").textContent = name;
+      document.querySelector("#footerBrandTagline").textContent = tagline;
+      document.querySelector("#footerDescription").textContent =
+        identity.footer_description ||
+        "A local discovery platform connecting Mbombela residents, visitors and businesses.";
+
+      applyContactLink("#footerEmail", contact.email, "mailto:", "Email unavailable");
+      applyContactLink("#footerPhone", contact.phone, "tel:", "Phone unavailable");
+      applyWhatsAppLink("#footerWhatsApp", contact.whatsapp);
+      document.querySelector("#footerAddress").textContent =
+        contact.address || "Mbombela, Mpumalanga";
+
+      applySocialLink("#facebookLink", socials.facebook);
+      applySocialLink("#instagramLink", socials.instagram);
+      applySocialLink("#tiktokLink", socials.tiktok);
+      applySocialLink("#youtubeLink", socials.youtube);
+    }
+
+    function applyContactLink(selector, value, protocol, fallback) {
+      const element = document.querySelector(selector);
+
+      if (!value) {
+        element.textContent = fallback;
+        element.removeAttribute("href");
+        return;
+      }
+
+      element.textContent = value;
+      element.href = protocol + value;
+    }
+
+    function applyWhatsAppLink(selector, value) {
+      const element = document.querySelector(selector);
+
+      if (!value) {
+        element.textContent = "WhatsApp unavailable";
+        element.removeAttribute("href");
+        return;
+      }
+
+      const digits = String(value).replace(/\D/g, "");
+      element.textContent = value;
+      element.href = `https://wa.me/${digits}`;
+      element.target = "_blank";
+      element.rel = "noopener";
+    }
+
+    function applySocialLink(selector, value) {
+      const element = document.querySelector(selector);
+      if (!value) return;
+
+      element.href = safeURL(value);
+      element.classList.remove("hidden");
+    }
+
+    async function loadHomepageSections() {
+      const { data, error } = await fetchRows("homepage_sections", query =>
+        query.eq("is_visible", true).order("display_order", { ascending: true })
+      );
+
+      if (error) return;
+
+      const sections = Object.fromEntries(
+        data.map(section => [section.section_key, section])
+      );
+
+      applyHeroSection(sections.hero);
+      applyTextSection(
+        sections.featured_businesses,
+        "#businessEyebrow",
+        "#businessTitle",
+        "#businessDescription"
+      );
+      applyTextSection(
+        sections.upcoming_events,
+        "#eventEyebrow",
+        "#eventTitle",
+        "#eventDescription"
+      );
+      applyTextSection(
+        sections.jobs,
+        "#jobEyebrow",
+        "#jobTitle",
+        "#jobDescription"
+      );
+      applyTextSection(
+        sections.tourism,
+        "#tourismEyebrow",
+        "#tourismTitle",
+        "#tourismDescription"
+      );
+    }
+
+    function applyHeroSection(section) {
+      if (!section) return;
+
+      if (section.eyebrow) {
+        document.querySelector("#heroEyebrow").textContent = section.eyebrow;
+      }
+
+      if (section.title) {
+        document.querySelector("#heroTitle").textContent = section.title;
+      }
+
+      if (section.description) {
+        document.querySelector("#heroDescription").textContent =
+          section.description;
+      }
+
+      const button = document.querySelector("#heroPrimaryButton");
+
+      if (section.button_text) {
+        button.childNodes[0].textContent = section.button_text + " ";
+      }
+
+      if (section.button_url) {
+        button.href = section.button_url;
+      }
+
+      if (section.image_url) {
+        document.querySelector("#heroMedia").style.background = `
+          linear-gradient(
+            90deg,
+            rgba(9, 39, 30, 0.96) 0%,
+            rgba(9, 39, 30, 0.82) 52%,
+            rgba(9, 39, 30, 0.34) 100%
+          ),
+          url("${safeURL(section.image_url)}") center / cover no-repeat
+        `;
+      }
+    }
+
+    function applyTextSection(section, eyebrowSelector, titleSelector, descriptionSelector) {
+      if (!section) return;
+
+      if (section.eyebrow) {
+        document.querySelector(eyebrowSelector).textContent = section.eyebrow;
+      }
+
+      if (section.title) {
+        document.querySelector(titleSelector).textContent = section.title;
+      }
+
+      if (section.description) {
+        document.querySelector(descriptionSelector).textContent =
+          section.description;
+      }
+    }
+
+    async function loadCategories() {
+      const { data, error } = await fetchRows("business_categories", query =>
+        query.eq("is_active", true).order("display_order", { ascending: true }).limit(8)
+      );
+
+      if (error) {
+        elements.categoryGrid.innerHTML = errorState(
+          "Categories could not load",
+          "Please refresh the page or check your Supabase connection."
+        );
+        return;
+      }
+
+      if (!data.length) {
+        elements.categoryGrid.innerHTML = emptyState(
+          "No categories available",
+          "Categories added by the admin will appear here."
+        );
+        return;
+      }
+
+      elements.categoryGrid.innerHTML = data
+        .map(category => {
+          const icon =
+            category.icon ||
+            CATEGORY_ICON_MAP[category.slug] ||
+            "fa-store";
+
+          return `
+            <a
+              class="category-card"
+              href="businesses.html?category=${encodeURIComponent(category.slug)}"
+            >
+              <div>
+                <span class="category-icon">
+                  <i class="fa-solid ${escapeHTML(icon)}"></i>
+                </span>
+                <h3>${escapeHTML(category.name)}</h3>
+                <p>${escapeHTML(truncate(category.description, 90))}</p>
+              </div>
+              <span class="arrow">
+                Explore category
+                <i class="fa-solid fa-arrow-right"></i>
+              </span>
+            </a>
+          `;
+        })
+        .join("");
+    }
+
+    async function loadBusinesses() {
+      const { data, error } = await fetchRows("businesses", query =>
+        query
+          .eq("status", "approved")
+          .eq("is_published", true)
+          .order("is_featured", { ascending: false })
+          .order("created_at", { ascending: false })
+          .limit(6)
+      );
+
+      if (error) {
+        elements.businessGrid.innerHTML = errorState(
+          "Businesses could not load",
+          "Please refresh the page or check the Supabase policies."
+        );
+        return;
+      }
+
+      if (!data.length) {
+        elements.businessGrid.innerHTML = emptyState(
+          "No businesses published yet",
+          "Approved businesses from the admin portal will appear here."
+        );
+        return;
+      }
+
+      elements.businessGrid.innerHTML = data
+        .map(item => `
+          <article class="content-card">
+            <a href="business-details.html?id=${encodeURIComponent(item.id)}">
+              <div class="content-card-media">
+                <img
+                  src="${safeURL(item.cover_url || item.logo_url || DEFAULT_IMAGE)}"
+                  alt="${escapeHTML(item.name)}"
+                  loading="lazy"
+                  onerror="this.src='${DEFAULT_IMAGE}'"
+                />
+                ${item.is_featured ? '<span class="badge">Featured</span>' : ""}
+              </div>
+            </a>
+
+            <div class="content-card-body">
+              <h3>${escapeHTML(item.name)}</h3>
+              <p>${escapeHTML(truncate(item.short_description || item.description))}</p>
+
+              <div class="meta-list">
+                <div class="meta-item">
+                  <i class="fa-solid fa-location-dot"></i>
+                  <span>${escapeHTML([item.suburb, item.city].filter(Boolean).join(", ") || "Mbombela")}</span>
+                </div>
+                <div class="meta-item">
+                  <i class="fa-solid fa-star"></i>
+                  <span>${Number(item.average_rating || 0).toFixed(1)} rating · ${Number(item.review_count || 0)} reviews</span>
+                </div>
+              </div>
+
+              <div class="content-card-footer">
+                <span class="price">${item.is_verified ? "Verified business" : "Local business"}</span>
+                <a
+                  class="text-link"
+                  href="business-details.html?id=${encodeURIComponent(item.id)}"
+                >
+                  View details
+                </a>
+              </div>
+            </div>
+          </article>
+        `)
+        .join("");
+    }
+
+    async function loadEvents() {
+      const now = new Date().toISOString();
+
+      const { data, error } = await fetchRows("events", query =>
+        query
+          .eq("status", "approved")
+          .eq("is_published", true)
+          .gte("starts_at", now)
+          .order("is_featured", { ascending: false })
+          .order("starts_at", { ascending: true })
+          .limit(6)
+      );
+
+      if (error) {
+        elements.eventGrid.innerHTML = errorState(
+          "Events could not load",
+          "Please refresh the page or check the Supabase policies."
+        );
+        return;
+      }
+
+      if (!data.length) {
+        elements.eventGrid.innerHTML = emptyState(
+          "No upcoming events",
+          "Approved events added through the admin portal will appear here."
+        );
+        return;
+      }
+
+      elements.eventGrid.innerHTML = data
+        .map(item => `
+          <article class="content-card">
+            <a href="event-details.html?id=${encodeURIComponent(item.id)}">
+              <div class="content-card-media">
+                <img
+                  src="${safeURL(item.poster_url || DEFAULT_IMAGE)}"
+                  alt="${escapeHTML(item.title)}"
+                  loading="lazy"
+                  onerror="this.src='${DEFAULT_IMAGE}'"
+                />
+                ${item.is_featured ? '<span class="badge">Featured event</span>' : ""}
+              </div>
+            </a>
+
+            <div class="content-card-body">
+              <h3>${escapeHTML(item.title)}</h3>
+              <p>${escapeHTML(truncate(item.short_description || item.description))}</p>
+
+              <div class="meta-list">
+                <div class="meta-item">
+                  <i class="fa-regular fa-calendar"></i>
+                  <span>${escapeHTML(formatDate(item.starts_at, true))}</span>
+                </div>
+                <div class="meta-item">
+                  <i class="fa-solid fa-location-dot"></i>
+                  <span>${escapeHTML(item.venue_name || item.city || "Mbombela")}</span>
+                </div>
+              </div>
+
+              <div class="content-card-footer">
+                <span class="price">${formatMoney(item.ticket_price_from)}</span>
+                <a
+                  class="text-link"
+                  href="event-details.html?id=${encodeURIComponent(item.id)}"
+                >
+                  View event
+                </a>
+              </div>
+            </div>
+          </article>
+        `)
+        .join("");
+    }
+
+    async function loadJobs() {
+      const today = new Date().toISOString().split("T")[0];
+
+      const { data, error } = await fetchRows("jobs", query =>
+        query
+          .eq("status", "approved")
+          .eq("is_published", true)
+          .or(`closing_date.is.null,closing_date.gte.${today}`)
+          .order("is_featured", { ascending: false })
+          .order("created_at", { ascending: false })
+          .limit(6)
+      );
+
+      if (error) {
+        elements.jobGrid.innerHTML = errorState(
+          "Jobs could not load",
+          "Please refresh the page or check the Supabase policies."
+        );
+        return;
+      }
+
+      if (!data.length) {
+        elements.jobGrid.innerHTML = emptyState(
+          "No jobs published yet",
+          "Approved opportunities added through the admin portal will appear here."
+        );
+        return;
+      }
+
+      elements.jobGrid.innerHTML = data
+        .map(item => `
+          <article class="content-card">
+            <div class="content-card-body">
+              ${item.is_featured ? '<span style="display:inline-block;margin-bottom:14px;color:var(--accent-dark);font-size:12px;font-weight:800;text-transform:uppercase;">Featured opportunity</span>' : ""}
+              <h3>${escapeHTML(item.title)}</h3>
+              <p>${escapeHTML(truncate(item.description, 150))}</p>
+
+              <div class="meta-list">
+                <div class="meta-item">
+                  <i class="fa-solid fa-building"></i>
+                  <span>${escapeHTML(item.company_name)}</span>
+                </div>
+                <div class="meta-item">
+                  <i class="fa-solid fa-location-dot"></i>
+                  <span>${escapeHTML(item.is_remote ? "Remote / " + (item.location || "Mbombela") : item.location || "Mbombela")}</span>
+                </div>
+                <div class="meta-item">
+                  <i class="fa-regular fa-clock"></i>
+                  <span>${escapeHTML(item.employment_type || "Employment type not specified")}</span>
+                </div>
+              </div>
+
+              <div class="content-card-footer">
+                <span class="price">
+                  ${
+                    item.salary_min
+                      ? `${formatMoney(item.salary_min)}${item.salary_period ? " / " + escapeHTML(item.salary_period) : ""}`
+                      : "Salary not disclosed"
+                  }
+                </span>
+                <a
+                  class="text-link"
+                  href="job-details.html?id=${encodeURIComponent(item.id)}"
+                >
+                  View job
+                </a>
+              </div>
+            </div>
+          </article>
+        `)
+        .join("");
+    }
+
+    async function loadAccommodation() {
+      const { data, error } = await fetchRows("accommodations", query =>
+        query
+          .eq("status", "approved")
+          .eq("is_published", true)
+          .order("is_featured", { ascending: false })
+          .order("created_at", { ascending: false })
+          .limit(6)
+      );
+
+      if (error) {
+        elements.accommodationGrid.innerHTML = errorState(
+          "Accommodation could not load",
+          "Please refresh the page or check the Supabase policies."
+        );
+        return;
+      }
+
+      if (!data.length) {
+        elements.accommodationGrid.innerHTML = emptyState(
+          "No accommodation published yet",
+          "Approved accommodation listings will appear here."
+        );
+        return;
+      }
+
+      elements.accommodationGrid.innerHTML = data
+        .map(item => `
+          <article class="content-card">
+            <a href="accommodation-details.html?id=${encodeURIComponent(item.id)}">
+              <div class="content-card-media">
+                <img
+                  src="${safeURL(item.cover_url || DEFAULT_IMAGE)}"
+                  alt="${escapeHTML(item.name)}"
+                  loading="lazy"
+                  onerror="this.src='${DEFAULT_IMAGE}'"
+                />
+                ${item.is_featured ? '<span class="badge">Featured stay</span>' : ""}
+              </div>
+            </a>
+
+            <div class="content-card-body">
+              <h3>${escapeHTML(item.name)}</h3>
+              <p>${escapeHTML(truncate(item.short_description || item.description))}</p>
+
+              <div class="meta-list">
+                <div class="meta-item">
+                  <i class="fa-solid fa-bed"></i>
+                  <span>${escapeHTML(item.accommodation_type || "Accommodation")}</span>
+                </div>
+                <div class="meta-item">
+                  <i class="fa-solid fa-location-dot"></i>
+                  <span>${escapeHTML(item.city || "Mbombela")}</span>
+                </div>
+              </div>
+
+              <div class="content-card-footer">
+                <span class="price">
+                  ${item.price_from ? `From ${formatMoney(item.price_from)} / ${escapeHTML(item.price_unit || "night")}` : "Contact for price"}
+                </span>
+                <a
+                  class="text-link"
+                  href="accommodation-details.html?id=${encodeURIComponent(item.id)}"
+                >
+                  View stay
+                </a>
+              </div>
+            </div>
+          </article>
+        `)
+        .join("");
+    }
+
+    async function loadTourism() {
+      const { data, error } = await fetchRows("tourism_places", query =>
+        query
+          .eq("status", "approved")
+          .eq("is_published", true)
+          .order("is_featured", { ascending: false })
+          .order("created_at", { ascending: false })
+          .limit(6)
+      );
+
+      if (error) {
+        elements.tourismGrid.innerHTML = errorState(
+          "Tourism places could not load",
+          "Please refresh the page or check the Supabase policies."
+        );
+        return;
+      }
+
+      if (!data.length) {
+        elements.tourismGrid.innerHTML = emptyState(
+          "No tourism places published yet",
+          "Approved attractions and experiences will appear here."
+        );
+        return;
+      }
+
+      elements.tourismGrid.innerHTML = data
+        .map(item => `
+          <article class="content-card">
+            <a href="place-details.html?id=${encodeURIComponent(item.id)}">
+              <div class="content-card-media">
+                <img
+                  src="${safeURL(item.cover_url || DEFAULT_IMAGE)}"
+                  alt="${escapeHTML(item.name)}"
+                  loading="lazy"
+                  onerror="this.src='${DEFAULT_IMAGE}'"
+                />
+                ${item.is_featured ? '<span class="badge">Featured place</span>' : ""}
+              </div>
+            </a>
+
+            <div class="content-card-body">
+              <h3>${escapeHTML(item.name)}</h3>
+              <p>${escapeHTML(truncate(item.short_description || item.description))}</p>
+
+              <div class="meta-list">
+                <div class="meta-item">
+                  <i class="fa-solid fa-binoculars"></i>
+                  <span>${escapeHTML(item.place_type || "Local attraction")}</span>
+                </div>
+                <div class="meta-item">
+                  <i class="fa-solid fa-location-dot"></i>
+                  <span>${escapeHTML(item.city || "Mbombela")}</span>
+                </div>
+              </div>
+
+              <div class="content-card-footer">
+                <span class="price">
+                  ${item.entrance_fee_from ? `From ${formatMoney(item.entrance_fee_from)}` : "View experience"}
+                </span>
+                <a
+                  class="text-link"
+                  href="place-details.html?id=${encodeURIComponent(item.id)}"
+                >
+                  Explore
+                </a>
+              </div>
+            </div>
+          </article>
+        `)
+        .join("");
+    }
+
+    async function loadAnnouncements() {
+      /*
+        The public RLS policy already decides whether an announcement is active.
+        Do not repeat timestamp filtering in the browser because differences
+        between the device clock and Supabase server clock can hide valid rows.
+      */
+      const { data, error } = await fetchRows("announcements", query =>
+        query
+          .eq("is_published", true)
+          .order("priority", { ascending: false })
+          .order("created_at", { ascending: false })
+          .limit(5)
+      );
+
+      if (error) {
+        elements.announcementList.innerHTML = errorState(
+          "Updates could not load",
+          error.message || "Please refresh the page or check the Supabase policies."
+        );
+        return;
+      }
+
+      if (!data.length) {
+        elements.announcementList.innerHTML = emptyState(
+          "No active announcements",
+          "Published community updates will appear here."
+        );
+        return;
+      }
+
+      elements.announcementList.innerHTML = data
+        .map(item => `
+          <article class="announcement-item">
+            <time>${escapeHTML(formatDate(item.created_at))}</time>
+            <h3>${escapeHTML(item.title)}</h3>
+            <p>${escapeHTML(truncate(item.description, 190))}</p>
+            ${
+              item.link_url
+                ? `<a class="text-link" style="display:inline-block;margin-top:13px;color:var(--accent);" href="${safeURL(item.link_url)}">Read more</a>`
+                : ""
+            }
+          </article>
+        `)
+        .join("");
+    }
+
+    function setupSearch() {
+      document.querySelector("#searchForm").addEventListener("submit", event => {
+        event.preventDefault();
+
+        const term = document.querySelector("#searchInput").value.trim();
+        const type = document.querySelector("#searchType").value;
+
+        if (!term) {
+          showToast("Please enter what you are looking for.");
+          return;
+        }
+
+        const routeMap = {
+          businesses: "businesses.html",
+          events: "events.html",
+          jobs: "jobs.html",
+          accommodations: "accommodation.html",
+          tourism_places: "explore.html"
+        };
+
+        window.location.href =
+          `${routeMap[type]}?search=${encodeURIComponent(term)}`;
+      });
+    }
+
+    function setupNewsletter() {
+      document.querySelector("#newsletterForm").addEventListener("submit", event => {
+        event.preventDefault();
+        showToast(
+          "Newsletter storage will be connected in a later part. Your email was not submitted yet."
+        );
+        event.currentTarget.reset();
+      });
+    }
+
+    function setupMobileMenu() {
+      const toggle = document.querySelector("#menuToggle");
+      const menu = document.querySelector("#mobileMenu");
+      const icon = toggle.querySelector("i");
+
+      function closeMenu() {
+        menu.classList.remove("open");
+        menu.setAttribute("aria-hidden", "true");
+        toggle.setAttribute("aria-expanded", "false");
+        document.body.classList.remove("menu-open");
+        icon.className = "fa-solid fa-bars";
+      }
+
+      toggle.addEventListener("click", () => {
+        const open = !menu.classList.contains("open");
+
+        menu.classList.toggle("open", open);
+        menu.setAttribute("aria-hidden", String(!open));
+        toggle.setAttribute("aria-expanded", String(open));
+        document.body.classList.toggle("menu-open", open);
+        icon.className = open ? "fa-solid fa-xmark" : "fa-solid fa-bars";
+      });
+
+      menu.addEventListener("click", event => {
+        if (event.target === menu) closeMenu();
+      });
+
+      menu.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", closeMenu);
+      });
+    }
+
+    async function loadHomepage() {
+      if (!initializeSupabase()) return;
+
+      await Promise.allSettled([
+        loadSiteSettings(),
+        loadHomepageSections(),
+        loadCategories(),
+        loadBusinesses(),
+        loadEvents(),
+        loadJobs(),
+        loadAccommodation(),
+        loadTourism(),
+        loadAnnouncements()
+      ]);
+    }
+
+    setupSearch();
+    setupNewsletter();
+    setupMobileMenu();
+    loadHomepage();
+  </script>
+</body>
+</html>
