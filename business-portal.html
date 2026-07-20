@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#133c2f">
+<title>Business Portal | Mbombela Connect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<style>
+:root{--primary:#133c2f;--primary-dark:#09271e;--accent:#e8a823;--bg:#f4f2ec;--surface:#fff;--text:#16201b;--muted:#6f7974;--border:#d9ddd8;--danger:#b63c3c;--success:#23865f;--warning:#b57d00;--shadow:0 18px 50px rgba(23,32,28,.12);--radius:20px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}a{text-decoration:none;color:inherit}.hidden{display:none!important}
+.portal{min-height:100vh;display:grid;grid-template-columns:280px 1fr}.sidebar{position:sticky;top:0;height:100vh;background:#0d1a14;color:#fff;padding:24px 18px;display:flex;flex-direction:column}.brand{display:flex;align-items:center;gap:12px;padding:0 10px 24px}.brand-mark{width:46px;height:46px;border-radius:14px;background:var(--accent);color:#201600;display:grid;place-items:center;font-size:20px}.brand strong{display:block;font-family:"Manrope",sans-serif}.brand span{display:block;font-size:12px;color:rgba(255,255,255,.56);margin-top:3px}.nav{display:grid;gap:7px}.nav button{width:100%;border:0;background:transparent;color:rgba(255,255,255,.72);padding:13px 14px;border-radius:12px;text-align:left;display:flex;align-items:center;gap:11px;font-weight:700}.nav button.active,.nav button:hover{background:#173326;color:#fff}.sidebar-bottom{margin-top:auto;border-top:1px solid rgba(255,255,255,.1);padding-top:18px}.user-mini{padding:10px}.user-mini strong,.user-mini span{display:block}.user-mini span{font-size:12px;color:rgba(255,255,255,.55);margin-top:3px}
+.main{min-width:0}.topbar{height:76px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:100}.topbar h1{margin:0;font-family:"Manrope",sans-serif;font-size:24px}.top-actions{display:flex;gap:10px}.content{padding:28px}.btn{border:0;min-height:44px;border-radius:12px;padding:0 16px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:8px}.btn-primary{background:var(--primary);color:#fff}.btn-outline{background:#fff;border:1px solid var(--border);color:var(--text)}.btn-danger{background:var(--danger);color:#fff}.btn-accent{background:var(--accent);color:#201600}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}.stat{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px}.stat i{width:42px;height:42px;border-radius:12px;background:#e8f0ec;color:var(--primary);display:grid;place-items:center;margin-bottom:18px}.stat strong{display:block;font-family:"Manrope",sans-serif;font-size:30px}.stat span{color:var(--muted);font-size:13px}
+.panel{background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 24px rgba(23,32,28,.05);margin-bottom:22px}.panel-head{padding:20px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:16px}.panel-head h2{margin:0;font-family:"Manrope",sans-serif;font-size:20px}.panel-body{padding:22px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.field{display:grid;gap:7px}.field.full{grid-column:1/-1}.field label{font-weight:700;font-size:13px}.field input,.field select,.field textarea{width:100%;border:1px solid var(--border);border-radius:12px;padding:12px 14px;outline:none;background:#fff}.field textarea{min-height:120px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(19,60,47,.1)}
+.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:760px}.table th,.table td{padding:14px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:13px}.table th{color:var(--muted);font-size:12px;text-transform:uppercase}.badge{display:inline-flex;align-items:center;padding:7px 10px;border-radius:999px;font-size:11px;font-weight:800;text-transform:uppercase}.approved{background:#e3f5ec;color:#16704e}.pending{background:#fff3cf;color:#8d6500}.rejected{background:#fde5e5;color:#9a2f2f}.draft{background:#edf0ee;color:#5c6661}
+.empty{padding:50px 20px;text-align:center;color:var(--muted)}.empty i{font-size:34px;color:var(--primary);display:block;margin-bottom:12px}.toast{position:fixed;right:20px;bottom:20px;background:#16201b;color:#fff;padding:15px 18px;border-radius:12px;box-shadow:var(--shadow);opacity:0;transform:translateY(20px);transition:.2s;z-index:5000}.toast.show{opacity:1;transform:none}
+.auth-screen{min-height:100vh;display:grid;grid-template-columns:1.05fr .95fr;background:#fff}.auth-visual{background:linear-gradient(135deg,rgba(9,39,30,.95),rgba(19,60,47,.78)),url("https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1600&q=80") center/cover;color:#fff;padding:60px;display:flex;flex-direction:column;justify-content:flex-end}.auth-visual h1{font-family:"Manrope",sans-serif;font-size:56px;line-height:1;margin:0 0 18px}.auth-visual p{max-width:600px;color:rgba(255,255,255,.72);line-height:1.8}.auth-card-wrap{display:grid;place-items:center;padding:28px}.auth-card{width:min(460px,100%)}.auth-card h2{font-family:"Manrope",sans-serif;font-size:34px;margin:0 0 8px}.auth-card>p{margin:0 0 24px;color:var(--muted)}.tabs{display:grid;grid-template-columns:1fr 1fr;background:#eef1ee;padding:5px;border-radius:14px;margin-bottom:20px}.tabs button{border:0;background:transparent;padding:11px;border-radius:10px;font-weight:800}.tabs button.active{background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.07)}
+.mobile-menu{display:none}.overlay{display:none}
+@media(max-width:1000px){.portal{grid-template-columns:1fr}.sidebar{position:fixed;left:-290px;z-index:2000;width:280px;transition:.25s}.sidebar.open{left:0}.mobile-menu{display:inline-flex}.overlay.show{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1500}.stats{grid-template-columns:repeat(2,1fr)}.auth-screen{grid-template-columns:1fr}.auth-visual{display:none}}
+@media(max-width:680px){.content{padding:18px}.topbar{padding:0 16px}.topbar h1{font-size:19px}.top-actions .btn-primary{display:none}.stats,.grid{grid-template-columns:1fr}.panel-head{align-items:flex-start;flex-direction:column}.auth-card-wrap{padding:20px}.auth-card h2{font-size:29px}}
+
+.upload-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.upload-card{border:1px solid var(--border);border-radius:16px;padding:16px;background:#f8faf8;display:grid;gap:12px}
+.upload-preview{width:100%;aspect-ratio:16/10;border-radius:14px;overflow:hidden;background:#e8eee9;display:grid;place-items:center;color:var(--primary);font-size:32px;border:1px dashed #b9c7bf}
+.upload-preview.logo-preview{aspect-ratio:1/1;max-width:180px}
+.upload-preview img{width:100%;height:100%;object-fit:cover}
+.file-picker{position:relative;display:inline-flex;width:max-content}
+.file-picker input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.gallery-preview{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.gallery-preview figure{margin:0;position:relative;aspect-ratio:1/1;overflow:hidden;border-radius:12px;background:#e8eee9}
+.gallery-preview img{width:100%;height:100%;object-fit:cover}
+.gallery-preview button{position:absolute;top:7px;right:7px;width:30px;height:30px;padding:0;border:0;border-radius:50%;background:rgba(0,0,0,.72);color:#fff}
+.upload-note{color:var(--muted);font-size:12px;line-height:1.6}
+.upload-progress{display:none;height:8px;border-radius:999px;overflow:hidden;background:#e4e9e5}
+.upload-progress.show{display:block}
+.upload-progress span{display:block;height:100%;width:45%;background:var(--primary);animation:uploadMove 1s ease-in-out infinite alternate}
+@keyframes uploadMove{from{transform:translateX(-20%)}to{transform:translateX(160%)}}
+
+.drop-zone{
+  position:relative;
+  border:2px dashed #b9c7bf;
+  border-radius:16px;
+  padding:18px;
+  background:#f8faf8;
+  transition:border-color .2s,background .2s,transform .2s;
+}
+.drop-zone.dragover{
+  border-color:var(--primary);
+  background:#edf5f0;
+  transform:translateY(-2px);
+}
+.drop-zone .drop-copy{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+}
+.drop-zone .drop-copy strong{display:block}
+.drop-zone .drop-copy span{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+.media-preview{
+  width:100%;
+  aspect-ratio:16/9;
+  border-radius:14px;
+  overflow:hidden;
+  background:#e8eee9;
+  border:1px solid var(--border);
+  display:grid;
+  place-items:center;
+  color:var(--primary);
+  font-size:34px;
+  position:relative;
+}
+.media-preview img{width:100%;height:100%;object-fit:cover}
+.media-preview .remove-media{
+  position:absolute;
+  top:10px;
+  right:10px;
+  width:36px;
+  height:36px;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  background:rgba(0,0,0,.72);
+  color:#fff;
+  display:grid;
+  place-items:center;
+}
+.file-status{
+  display:none;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+  font-weight:700;
+  color:var(--success);
+}
+.file-status.show{display:flex}
+.upload-card.is-uploading{opacity:.72;pointer-events:none}
+@media(max-width:560px){
+  .drop-zone .drop-copy{align-items:flex-start;flex-direction:column}
+  .drop-zone .btn{width:100%}
+}
+
+@media(max-width:760px){.upload-grid{grid-template-columns:1fr}.gallery-preview{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+</style>
+</head>
+<body>
+<section class="auth-screen" id="authScreen">
+  <div class="auth-visual"><div><span style="color:var(--accent);font-weight:800;letter-spacing:2px;text-transform:uppercase">Business Portal</span><h1>Grow your business in Mbombela.</h1><p>Create and manage your business profile, promotions and events from one professional dashboard.</p></div></div>
+  <div class="auth-card-wrap"><div class="auth-card">
+    <h2>Welcome</h2><p>Sign in or create a business owner account.</p>
+    <div class="tabs"><button class="active" id="loginTab">Sign in</button><button id="registerTab">Register</button></div>
+    <form id="loginForm" class="grid">
+      <div class="field full"><label>Email</label><input id="loginEmail" type="email" required></div>
+      <div class="field full"><label>Password</label><input id="loginPassword" type="password" required minlength="6"></div>
+      <div class="field full"><button class="btn btn-primary" type="submit">Sign in</button></div>
+    </form>
+    <form id="registerForm" class="grid hidden">
+      <div class="field full"><label>Full name</label><input id="registerName" required></div>
+      <div class="field full"><label>Email</label><input id="registerEmail" type="email" required></div>
+      <div class="field full"><label>Password</label><input id="registerPassword" type="password" required minlength="6"></div>
+      <div class="field full"><button class="btn btn-primary" type="submit">Create account</button></div>
+    </form>
+  </div></div>
+</section>
+
+<div class="portal hidden" id="portal">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><span class="brand-mark"><i class="fa-solid fa-location-dot"></i></span><span><strong>Mbombela Connect</strong><span>Business Portal</span></span></div>
+    <nav class="nav">
+      <button class="active" data-view="dashboard"><i class="fa-solid fa-chart-line"></i>Dashboard</button>
+      <button data-view="business"><i class="fa-solid fa-store"></i>My Business</button>
+      <button data-view="events"><i class="fa-regular fa-calendar"></i>Events</button>
+      <button data-view="promotions"><i class="fa-solid fa-tags"></i>Promotions</button>
+      <button data-view="reviews"><i class="fa-solid fa-star"></i>Reviews</button>
+      <button data-view="profile"><i class="fa-solid fa-user"></i>Profile</button>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="user-mini"><strong id="sidebarName">Business Owner</strong><span id="sidebarEmail">email@example.com</span></div>
+      <button class="btn btn-outline" id="logoutBtn" style="width:100%">Sign out</button>
+    </div>
+  </aside>
+  <div class="overlay" id="overlay"></div>
+  <main class="main">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:10px"><button class="btn btn-outline mobile-menu" id="menuBtn"><i class="fa-solid fa-bars"></i></button><h1 id="pageTitle">Dashboard</h1></div>
+      <div class="top-actions"><a class="btn btn-outline" href="index.html" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i>View website</a><button class="btn btn-primary" data-view-jump="business"><i class="fa-solid fa-plus"></i>Add business</button></div>
+    </header>
+    <div class="content">
+      <section id="view-dashboard">
+        <div class="stats">
+          <div class="stat"><i class="fa-solid fa-store"></i><strong id="statBusinesses">0</strong><span>Business listings</span></div>
+          <div class="stat"><i class="fa-regular fa-calendar"></i><strong id="statEvents">0</strong><span>Events</span></div>
+          <div class="stat"><i class="fa-solid fa-tags"></i><strong id="statPromotions">0</strong><span>Promotions</span></div>
+          <div class="stat"><i class="fa-solid fa-star"></i><strong id="statReviews">0</strong><span>Reviews received</span></div>
+        </div>
+        <div class="panel"><div class="panel-head"><h2>Recent business listings</h2></div><div class="panel-body" id="recentBusinesses"></div></div>
+      </section>
+
+      <section id="view-business" class="hidden">
+        <div class="panel"><div class="panel-head"><h2>Create or update business</h2><button class="btn btn-outline" id="resetBusiness">Clear form</button></div>
+          <div class="panel-body"><form id="businessForm" class="grid">
+            <input type="hidden" id="businessId">
+            <div class="field"><label>Business name</label><input id="businessName" required></div>
+            <div class="field"><label>Category</label><select id="businessCategory" required><option value="">Choose category</option></select></div>
+            <div class="field full"><label>Short description</label><input id="businessShort"></div>
+            <div class="field full"><label>Full description</label><textarea id="businessDescription"></textarea></div>
+            <div class="field"><label>Phone</label><input id="businessPhone"></div>
+            <div class="field"><label>WhatsApp</label><input id="businessWhatsapp"></div>
+            <div class="field"><label>Email</label><input id="businessEmail" type="email"></div>
+            <div class="field"><label>Website</label><input id="businessWebsite" type="url"></div>
+            <div class="field"><label>Address</label><input id="businessAddress"></div>
+            <div class="field"><label>City</label><input id="businessCity" value="Mbombela"></div>
+            <div class="field full">
+              <label>Business logo</label>
+              <div class="upload-card">
+                <div class="upload-preview logo-preview" id="businessLogoPreview">
+                  <i class="fa-solid fa-store"></i>
+                </div>
+                <label class="file-picker">
+                  <span class="btn btn-outline"><i class="fa-solid fa-upload"></i> Choose logo</span>
+                  <input id="businessLogoFile" type="file" accept="image/jpeg,image/png,image/webp">
+                </label>
+                <small class="upload-note">JPG, PNG or WebP. Maximum 5 MB.</small>
+              </div>
+            </div>
+
+            <div class="field full">
+              <label>Business cover picture</label>
+              <div class="upload-card">
+                <div class="upload-preview" id="businessCoverPreview">
+                  <i class="fa-regular fa-image"></i>
+                </div>
+                <label class="file-picker">
+                  <span class="btn btn-outline"><i class="fa-solid fa-upload"></i> Choose cover picture</span>
+                  <input id="businessCoverFile" type="file" accept="image/jpeg,image/png,image/webp">
+                </label>
+                <small class="upload-note">Recommended landscape image. Maximum 5 MB.</small>
+              </div>
+            </div>
+
+            <div class="field full">
+              <label>Business gallery pictures</label>
+              <div class="upload-card">
+                <label class="file-picker">
+                  <span class="btn btn-outline"><i class="fa-solid fa-images"></i> Choose pictures</span>
+                  <input id="businessGalleryFiles" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+                </label>
+                <small class="upload-note">Upload up to 8 pictures. Maximum 5 MB each.</small>
+                <div class="gallery-preview" id="businessGalleryPreview"></div>
+                <div class="upload-progress" id="businessUploadProgress"><span></span></div>
+              </div>
+            </div>
+
+            <div class="field full"><button class="btn btn-primary" type="submit">Save business</button></div>
+          </form></div>
+        </div>
+        <div class="panel"><div class="panel-head"><h2>My listings</h2></div><div class="panel-body"><div class="table-wrap"><table class="table"><thead><tr><th>Name</th><th>Status</th><th>Published</th><th>Actions</th></tr></thead><tbody id="businessRows"></tbody></table></div></div></div>
+      </section>
+
+      <section id="view-events" class="hidden">
+        <div class="panel"><div class="panel-head">
+      <div>
+        <h2>Create event</h2>
+        <p style="margin:6px 0 0;color:var(--muted);font-size:13px">
+          Events are submitted to the Events section and become public after admin approval.
+        </p>
+      </div>
+      <button class="btn btn-outline" id="resetEvent">Clear form</button>
+    </div><div class="panel-body">
+          <form id="eventForm" class="grid">
+            <input type="hidden" id="eventId">
+            <div class="field"><label>Event title</label><input id="eventTitle" required></div>
+            <div class="field"><label>Category</label><select id="eventCategory" required><option value="">Choose category</option></select></div>
+            <div class="field"><label>Start date & time</label><input id="eventStart" type="datetime-local" required></div>
+            <div class="field"><label>End date & time</label><input id="eventEnd" type="datetime-local"></div>
+            <div class="field"><label>Venue</label><input id="eventVenue"></div>
+            <div class="field"><label>City</label><input id="eventCity" value="Mbombela"></div>
+            <div class="field"><label>Ticket price from</label><input id="eventPrice" type="number" min="0"></div>
+            <div class="field"><label>Ticket URL</label><input id="eventTicket" type="url"></div>
+            <div class="field full"><label>Description</label><textarea id="eventDescription"></textarea></div>
+            <div class="field full">
+              <label>Event poster</label>
+              <div class="upload-card drop-zone" id="eventPosterDropZone">
+                <div class="media-preview" id="eventPosterPreview">
+                  <i class="fa-regular fa-image"></i>
+                </div>
+                <div class="drop-copy">
+                  <div>
+                    <strong>Upload the event poster</strong>
+                    <span>Drag and drop a picture here, or choose one from your phone or computer.</span>
+                  </div>
+                  <label class="file-picker">
+                    <span class="btn btn-outline"><i class="fa-solid fa-upload"></i> Choose poster</span>
+                    <input id="eventPosterFile" type="file" accept="image/jpeg,image/png,image/webp">
+                  </label>
+                </div>
+                <div class="file-status" id="eventPosterStatus">
+                  <i class="fa-solid fa-circle-check"></i><span>Poster selected</span>
+                </div>
+                <small class="upload-note">JPG, PNG or WebP. Maximum 5 MB. Landscape or portrait posters are supported.</small>
+                <div class="upload-progress" id="eventUploadProgress"><span></span></div>
+              </div>
+            </div>
+            <div class="field full"><button class="btn btn-primary" type="submit">Save event</button></div>
+          </form>
+        </div></div>
+        <div class="panel"><div class="panel-head"><h2>My events</h2></div><div class="panel-body"><div class="table-wrap"><table class="table"><thead><tr><th>Event</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead><tbody id="eventRows"></tbody></table></div></div></div>
+      </section>
+
+      <section id="view-promotions" class="hidden">
+        <div class="panel"><div class="panel-head"><h2>Create promotion</h2><button class="btn btn-outline" id="resetPromotion">Clear form</button></div><div class="panel-body">
+          <form id="promotionForm" class="grid">
+            <input type="hidden" id="promotionId">
+            <div class="field"><label>Business</label><select id="promotionBusiness" required><option value="">Choose business</option></select></div>
+            <div class="field"><label>Promotion title</label><input id="promotionTitle" required></div>
+            <div class="field"><label>Starts at</label><input id="promotionStart" type="datetime-local"></div>
+            <div class="field"><label>Ends at</label><input id="promotionEnd" type="datetime-local"></div>
+            <div class="field full"><label>Description</label><textarea id="promotionDescription"></textarea></div>
+            <div class="field full">
+              <label>Promotion picture</label>
+              <div class="upload-card drop-zone" id="promotionImageDropZone">
+                <div class="media-preview" id="promotionImagePreview">
+                  <i class="fa-solid fa-tags"></i>
+                </div>
+                <div class="drop-copy">
+                  <div>
+                    <strong>Upload the promotion artwork</strong>
+                    <span>Drag and drop an image here, or choose one from your device.</span>
+                  </div>
+                  <label class="file-picker">
+                    <span class="btn btn-outline"><i class="fa-solid fa-upload"></i> Choose picture</span>
+                    <input id="promotionImageFile" type="file" accept="image/jpeg,image/png,image/webp">
+                  </label>
+                </div>
+                <div class="file-status" id="promotionImageStatus">
+                  <i class="fa-solid fa-circle-check"></i><span>Picture selected</span>
+                </div>
+                <small class="upload-note">JPG, PNG or WebP. Maximum 5 MB.</small>
+                <div class="upload-progress" id="promotionUploadProgress"><span></span></div>
+              </div>
+            </div>
+            <div class="field full"><button class="btn btn-primary" type="submit">Save promotion</button></div>
+          </form>
+        </div></div>
+        <div class="panel"><div class="panel-head"><h2>My promotions</h2></div><div class="panel-body"><div class="table-wrap"><table class="table"><thead><tr><th>Promotion</th><th>Business</th><th>Status</th><th>Actions</th></tr></thead><tbody id="promotionRows"></tbody></table></div></div></div>
+      </section>
+
+      <section id="view-reviews" class="hidden"><div class="panel"><div class="panel-head"><h2>Customer reviews</h2></div><div class="panel-body" id="reviewsList"></div></div></section>
+      <section id="view-profile" class="hidden"><div class="panel"><div class="panel-head"><h2>Profile</h2></div><div class="panel-body"><form id="profileForm" class="grid"><div class="field"><label>Full name</label><input id="profileName"></div><div class="field"><label>Phone</label><input id="profilePhone"></div><div class="field full"><button class="btn btn-primary" type="submit">Update profile</button></div></form></div></div></section>
+    </div>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL="https://aiwkouqlkcvldeqwhcso.supabase.co";
+const SUPABASE_ANON_KEY="sb_publishable_gNz9sA61ZME7SQB-Y5qTjQ_nQ-Qpj39";
+const db=window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY,
+  {
+    auth:{
+      persistSession:true,
+      autoRefreshToken:true,
+      detectSessionInUrl:true,
+      storageKey:"mbombela-connect-business-owner-auth"
+    }
+  }
+);
+let user=null,profile=null,businesses=[],events=[],promotions=[];
+const $=s=>document.querySelector(s);
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2800)}
+function esc(v=""){return String(v).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;")}
+function safeURL(v=""){try{const u=new URL(v,location.origin);return["http:","https:","blob:"].includes(u.protocol)?u.href:""}catch{return""}}
+let selectedGalleryFiles=[],existingGalleryUrls=[];
+let selectedEventPosterFile=null,currentEventPosterUrl="";
+let selectedPromotionImageFile=null,currentPromotionImageUrl="";
+function validateBusinessImage(file){const allowed=["image/jpeg","image/png","image/webp"],max=5*1024*1024;if(!allowed.includes(file.type))throw new Error("Only JPG, PNG and WebP images are allowed.");if(file.size>max)throw new Error(`${file.name} is larger than 5 MB.`)}
+function renderImagePreview(id,url,icon){const el=$(id);if(!el)return;el.innerHTML=url?`<img src="${safeURL(url)}" alt="Business image">`:`<i class="${icon}"></i>`}
+function renderGalleryPreview(){const el=$("#businessGalleryPreview");if(!el)return;const saved=existingGalleryUrls.map((url,i)=>`<figure><img src="${safeURL(url)}" alt="Business gallery image"><button type="button" onclick="removeExistingGallery(${i})"><i class="fa-solid fa-xmark"></i></button></figure>`);const fresh=selectedGalleryFiles.map((file,i)=>`<figure><img src="${URL.createObjectURL(file)}" alt="New gallery image"><button type="button" onclick="removeSelectedGallery(${i})"><i class="fa-solid fa-xmark"></i></button></figure>`);el.innerHTML=[...saved,...fresh].join("")}
+window.removeExistingGallery=i=>{existingGalleryUrls.splice(i,1);renderGalleryPreview()};
+window.removeSelectedGallery=i=>{selectedGalleryFiles.splice(i,1);renderGalleryPreview()};
+async function uploadBusinessImage(file,folder){validateBusinessImage(file);const ext=file.name.split(".").pop()?.toLowerCase()||"jpg",path=`${user.id}/${folder}/${crypto.randomUUID()}.${ext}`;const {error}=await db.storage.from("business-media").upload(path,file,{cacheControl:"3600",upsert:false,contentType:file.type});if(error)throw error;const {data}=db.storage.from("business-media").getPublicUrl(path);if(!data?.publicUrl)throw new Error("The uploaded image URL could not be created.");return data.publicUrl}
+function setupBusinessUploads(){
+  $("#businessLogoFile").onchange=e=>{const f=e.target.files?.[0];if(!f)return;try{validateBusinessImage(f);renderImagePreview("#businessLogoPreview",URL.createObjectURL(f),"fa-solid fa-store")}catch(err){e.target.value="";toast(err.message)}};
+  $("#businessCoverFile").onchange=e=>{const f=e.target.files?.[0];if(!f)return;try{validateBusinessImage(f);renderImagePreview("#businessCoverPreview",URL.createObjectURL(f),"fa-regular fa-image")}catch(err){e.target.value="";toast(err.message)}};
+  $("#businessGalleryFiles").onchange=e=>{const files=Array.from(e.target.files||[]);try{files.forEach(validateBusinessImage);if(existingGalleryUrls.length+selectedGalleryFiles.length+files.length>8)throw new Error("You can upload a maximum of 8 gallery pictures.");selectedGalleryFiles.push(...files);renderGalleryPreview();e.target.value=""}catch(err){e.target.value="";toast(err.message)}};
+}
+function renderMediaPreview(previewSelector,url,icon,statusSelector,removeHandler){
+  const preview=$(previewSelector);
+  const status=$(statusSelector);
+  if(!preview)return;
+
+  if(url){
+    preview.innerHTML=`
+      <img src="${safeURL(url)}" alt="Selected upload">
+      <button type="button" class="remove-media" aria-label="Remove selected image">
+        <i class="fa-solid fa-xmark"></i>
+      </button>`;
+    preview.querySelector(".remove-media")?.addEventListener("click",removeHandler);
+    status?.classList.add("show");
+  }else{
+    preview.innerHTML=`<i class="${icon}"></i>`;
+    status?.classList.remove("show");
+  }
+}
+function setEventPoster(file=null,url=""){
+  selectedEventPosterFile=file;
+  currentEventPosterUrl=url||"";
+  const previewUrl=file?URL.createObjectURL(file):currentEventPosterUrl;
+  renderMediaPreview(
+    "#eventPosterPreview",
+    previewUrl,
+    "fa-regular fa-image",
+    "#eventPosterStatus",
+    ()=>{
+      selectedEventPosterFile=null;
+      currentEventPosterUrl="";
+      $("#eventPosterFile").value="";
+      renderMediaPreview("#eventPosterPreview","","fa-regular fa-image","#eventPosterStatus",()=>{});
+    }
+  );
+}
+function setPromotionImage(file=null,url=""){
+  selectedPromotionImageFile=file;
+  currentPromotionImageUrl=url||"";
+  const previewUrl=file?URL.createObjectURL(file):currentPromotionImageUrl;
+  renderMediaPreview(
+    "#promotionImagePreview",
+    previewUrl,
+    "fa-solid fa-tags",
+    "#promotionImageStatus",
+    ()=>{
+      selectedPromotionImageFile=null;
+      currentPromotionImageUrl="";
+      $("#promotionImageFile").value="";
+      renderMediaPreview("#promotionImagePreview","","fa-solid fa-tags","#promotionImageStatus",()=>{});
+    }
+  );
+}
+function bindSingleImageDropZone(zoneSelector,inputSelector,onSelected){
+  const zone=$(zoneSelector);
+  const input=$(inputSelector);
+  if(!zone||!input)return;
+
+  const useFile=file=>{
+    try{
+      validateBusinessImage(file);
+      onSelected(file);
+    }catch(error){
+      input.value="";
+      toast(error.message);
+    }
+  };
+
+  input.addEventListener("change",event=>{
+    const file=event.target.files?.[0];
+    if(file)useFile(file);
+  });
+
+  ["dragenter","dragover"].forEach(name=>zone.addEventListener(name,event=>{
+    event.preventDefault();
+    zone.classList.add("dragover");
+  }));
+
+  ["dragleave","drop"].forEach(name=>zone.addEventListener(name,event=>{
+    event.preventDefault();
+    zone.classList.remove("dragover");
+  }));
+
+  zone.addEventListener("drop",event=>{
+    const file=event.dataTransfer?.files?.[0];
+    if(file)useFile(file);
+  });
+}
+function setupExtraMediaUploads(){
+  bindSingleImageDropZone("#eventPosterDropZone","#eventPosterFile",file=>setEventPoster(file));
+  bindSingleImageDropZone("#promotionImageDropZone","#promotionImageFile",file=>setPromotionImage(file));
+}
+
+function badge(status){return `<span class="badge ${status||"draft"}">${esc(status||"draft")}</span>`}
+function slugify(v){return String(v||"").toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
+function iso(v){return v?new Date(v).toISOString():null}
+function localInput(v){if(!v)return"";const d=new Date(v),z=n=>String(n).padStart(2,"0");return `${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}T${z(d.getHours())}:${z(d.getMinutes())}`}
+function showAuth(){ $("#authScreen").classList.remove("hidden");$("#portal").classList.add("hidden")}
+function showPortal(){ $("#authScreen").classList.add("hidden");$("#portal").classList.remove("hidden")}
+function switchView(name){document.querySelectorAll("[id^='view-']").forEach(v=>v.classList.add("hidden"));$(`#view-${name}`).classList.remove("hidden");document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===name));$("#pageTitle").textContent={dashboard:"Dashboard",business:"My Business",events:"Events",promotions:"Promotions",reviews:"Reviews",profile:"Profile"}[name];$("#sidebar").classList.remove("open");$("#overlay").classList.remove("show")}
+async function init(){
+  const {data:{session}}=await db.auth.getSession();
+
+  if(!session){
+    showAuth();
+    return;
+  }
+
+  user=session.user;
+
+  const {data:p,error}=await db
+    .from("profiles")
+    .select("*")
+    .eq("id",user.id)
+    .maybeSingle();
+
+  if(error){
+    console.error("Business owner profile check failed:",error);
+    await db.auth.signOut();
+    showAuth();
+    toast("Your account profile could not be verified.");
+    return;
+  }
+
+  profile=p;
+
+  if(profile?.is_active===false){
+    await db.auth.signOut();
+    showAuth();
+    toast("Your business account is currently disabled.");
+    return;
+  }
+
+  const currentRole=String(profile?.role||"").toLowerCase();
+
+  if(currentRole!=="business_owner"){
+    await db.auth.signOut();
+    showAuth();
+
+    if(["admin","staff","customer"].includes(currentRole)){
+      toast("This is not a business owner account. Please sign in with a business owner account.");
+    }else{
+      toast("This account does not have access to the Business Portal.");
+    }
+
+    return;
+  }
+
+  $("#sidebarName").textContent=profile?.full_name||user.email;
+  $("#sidebarEmail").textContent=user.email;
+  $("#profileName").value=profile?.full_name||"";
+  $("#profilePhone").value=profile?.phone||"";
+
+  showPortal();
+
+  await Promise.all([
+    loadCategories(),
+    loadEventCategories(),
+    loadAll()
+  ]);
+}
+async function loadCategories(){const {data}=await db.from("business_categories").select("id,name").eq("is_active",true).order("display_order");$("#businessCategory").innerHTML='<option value="">Choose category</option>'+((data||[]).map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join(""))}
+async function loadEventCategories(){const {data}=await db.from("event_categories").select("id,name").eq("is_active",true).order("display_order");$("#eventCategory").innerHTML='<option value="">Choose category</option>'+((data||[]).map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join(""))}
+async function loadAll(){await loadBusinesses();await Promise.all([loadEvents(),loadPromotions(),loadReviews()]);renderStats()}
+async function loadBusinesses(){const {data,error}=await db.from("businesses").select("*").eq("owner_id",user.id).order("created_at",{ascending:false});if(error)return toast(error.message);businesses=data||[];$("#businessRows").innerHTML=businesses.length?businesses.map(x=>`<tr><td>${esc(x.name)}</td><td>${badge(x.status)}</td><td>${x.is_published?"Yes":"No"}</td><td><button class="btn btn-outline" onclick="editBusiness('${x.id}')">Edit</button> <button class="btn btn-danger" onclick="deleteBusiness('${x.id}')">Delete</button></td></tr>`).join(""):`<tr><td colspan="4">No business listings yet.</td></tr>`;$("#promotionBusiness").innerHTML='<option value="">Choose business</option>'+businesses.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join("");$("#recentBusinesses").innerHTML=businesses.length?businesses.slice(0,5).map(x=>`<div style="padding:14px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between"><strong>${esc(x.name)}</strong>${badge(x.status)}</div>`).join(""):`<div class="empty"><i class="fa-solid fa-store"></i>No listings yet.</div>`}
+async function loadEvents(){
+  const {data,error}=await db
+    .from("events")
+    .select("*")
+    .eq("organizer_id",user.id)
+    .order("created_at",{ascending:false});
+
+  if(error){
+    console.error("Event loading failed:",error);
+    $("#eventRows").innerHTML='<tr><td colspan="4">Events could not be loaded.</td></tr>';
+    toast(error.message);
+    return;
+  }
+
+  events=data||[];
+
+  $("#eventRows").innerHTML=events.length
+    ?events.map(x=>`
+      <tr>
+        <td>${esc(x.title)}</td>
+        <td>${x.starts_at?new Date(x.starts_at).toLocaleString("en-ZA"):"-"}</td>
+        <td>${badge(x.status)}</td>
+        <td>
+          <button class="btn btn-outline" onclick="editEvent('${x.id}')">Edit</button>
+          <button class="btn btn-danger" onclick="deleteEvent('${x.id}')">Delete</button>
+        </td>
+      </tr>
+    `).join("")
+    :'<tr><td colspan="4">No events yet.</td></tr>';
+}
+async function loadPromotions(){const ids=businesses.map(x=>x.id);if(!ids.length){promotions=[];$("#promotionRows").innerHTML='<tr><td colspan="4">Create a business first.</td></tr>';return}const {data}=await db.from("promotions").select("*,businesses(name)").in("business_id",ids).order("created_at",{ascending:false});promotions=data||[];$("#promotionRows").innerHTML=promotions.length?promotions.map(x=>`<tr><td>${esc(x.title)}</td><td>${esc(x.businesses?.name||"-")}</td><td>${badge(x.status)}</td><td><button class="btn btn-outline" onclick="editPromotion('${x.id}')">Edit</button> <button class="btn btn-danger" onclick="deletePromotion('${x.id}')">Delete</button></td></tr>`).join(""):`<tr><td colspan="4">No promotions yet.</td></tr>`}
+async function loadReviews(){const ids=businesses.map(x=>x.id);if(!ids.length){$("#reviewsList").innerHTML='<div class="empty"><i class="fa-solid fa-star"></i>No reviews yet.</div>';return}const {data}=await db.from("reviews").select("*,profiles(full_name),businesses(name)").in("business_id",ids).order("created_at",{ascending:false});const rows=data||[];$("#reviewsList").innerHTML=rows.length?rows.map(x=>`<div style="padding:16px 0;border-bottom:1px solid var(--border)"><div style="display:flex;justify-content:space-between;gap:12px"><strong>${esc(x.profiles?.full_name||"Customer")} · ${esc(x.businesses?.name||"Business")}</strong><span>${"★".repeat(Number(x.rating||0))}</span></div><p style="color:var(--muted)">${esc(x.comment||"No comment")}</p></div>`).join(""):'<div class="empty"><i class="fa-solid fa-star"></i>No reviews yet.</div>'}
+function renderStats(){$("#statBusinesses").textContent=businesses.length;$("#statEvents").textContent=events.length;$("#statPromotions").textContent=promotions.length;$("#statReviews").textContent=$("#reviewsList").querySelectorAll("div[style*='border-bottom']").length}
+$("#loginTab").onclick=()=>{$("#loginTab").classList.add("active");$("#registerTab").classList.remove("active");$("#loginForm").classList.remove("hidden");$("#registerForm").classList.add("hidden")};
+$("#registerTab").onclick=()=>{$("#registerTab").classList.add("active");$("#loginTab").classList.remove("active");$("#registerForm").classList.remove("hidden");$("#loginForm").classList.add("hidden")};
+$("#loginForm").onsubmit=async e=>{e.preventDefault();const {error}=await db.auth.signInWithPassword({email:$("#loginEmail").value,password:$("#loginPassword").value});if(error)return toast(error.message);await init()};
+$("#registerForm").onsubmit=async e=>{
+  e.preventDefault();
+
+  const fullName=$("#registerName").value.trim();
+  const email=$("#registerEmail").value.trim();
+  const password=$("#registerPassword").value;
+
+  const {data,error}=await db.auth.signUp({
+    email,
+    password,
+    options:{
+      data:{
+        full_name:fullName,
+        requested_role:"business_owner"
+      }
+    }
+  });
+
+  if(error){
+    toast(error.message);
+    return;
+  }
+
+  if(data.user){
+    const {error:profileError}=await db
+      .from("profiles")
+      .update({
+        full_name:fullName,
+        role:"business_owner"
+      })
+      .eq("id",data.user.id);
+
+    if(profileError){
+      console.error("Business owner profile setup failed:",profileError);
+    }
+  }
+
+  toast("Business owner account created. Check your email if confirmation is enabled.");
+  $("#loginEmail").value=email;
+  $("#loginTab").click();
+};
+$("#logoutBtn").onclick=async()=>{await db.auth.signOut();location.reload()};
+document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>switchView(b.dataset.view));document.querySelectorAll("[data-view-jump]").forEach(b=>b.onclick=()=>switchView(b.dataset.viewJump));
+$("#menuBtn").onclick=()=>{$("#sidebar").classList.add("open");$("#overlay").classList.add("show")};$("#overlay").onclick=()=>{$("#sidebar").classList.remove("open");$("#overlay").classList.remove("show")};
+$("#businessForm").onsubmit=async e=>{
+  e.preventDefault();
+  const id=$("#businessId").value;
+  const current=id?businesses.find(x=>x.id===id):null;
+  const progress=$("#businessUploadProgress");
+  const submit=e.submitter;
+  progress.classList.add("show");
+  if(submit){submit.disabled=true;submit.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Uploading & saving...'}
+  try{
+    let logoUrl=current?.logo_url||null;
+    let coverUrl=current?.cover_url||null;
+    const logoFile=$("#businessLogoFile").files?.[0];
+    const coverFile=$("#businessCoverFile").files?.[0];
+    if(logoFile)logoUrl=await uploadBusinessImage(logoFile,"logos");
+    if(coverFile)coverUrl=await uploadBusinessImage(coverFile,"covers");
+    const newGallery=[];
+    for(const file of selectedGalleryFiles)newGallery.push(await uploadBusinessImage(file,"gallery"));
+    const galleryUrls=[...existingGalleryUrls,...newGallery];
+    const payload={
+      owner_id:user.id,
+      category_id:$("#businessCategory").value,
+      name:$("#businessName").value,
+      slug:current?.slug||slugify($("#businessName").value)+"-"+Date.now().toString().slice(-5),
+      short_description:$("#businessShort").value,
+      description:$("#businessDescription").value,
+      phone:$("#businessPhone").value,
+      whatsapp:$("#businessWhatsapp").value,
+      email:$("#businessEmail").value,
+      website_url:$("#businessWebsite").value,
+      address:$("#businessAddress").value,
+      city:$("#businessCity").value,
+      logo_url:logoUrl,
+      cover_url:coverUrl,
+      gallery_urls:galleryUrls,
+      status:"pending",
+      is_published:false
+    };
+    const q=id?db.from("businesses").update(payload).eq("id",id).eq("owner_id",user.id):db.from("businesses").insert(payload);
+    const {error}=await q;
+    if(error)throw error;
+    toast("Business saved and sent for approval.");
+    $("#resetBusiness").click();
+    await loadBusinesses();
+    renderStats();
+  }catch(error){
+    console.error(error);
+    toast(error.message||"The business could not be saved.");
+  }finally{
+    progress.classList.remove("show");
+    if(submit){submit.disabled=false;submit.innerHTML="Save business"}
+  }
+};
+window.editBusiness=id=>{const x=businesses.find(i=>i.id===id);if(!x)return;$("#businessId").value=x.id;$("#businessName").value=x.name||"";$("#businessCategory").value=x.category_id||"";$("#businessShort").value=x.short_description||"";$("#businessDescription").value=x.description||"";$("#businessPhone").value=x.phone||"";$("#businessWhatsapp").value=x.whatsapp||"";$("#businessEmail").value=x.email||"";$("#businessWebsite").value=x.website_url||"";$("#businessAddress").value=x.address||"";$("#businessCity").value=x.city||"";selectedGalleryFiles=[];existingGalleryUrls=Array.isArray(x.gallery_urls)?[...x.gallery_urls]:[];renderImagePreview("#businessLogoPreview",x.logo_url||"","fa-solid fa-store");renderImagePreview("#businessCoverPreview",x.cover_url||"","fa-regular fa-image");renderGalleryPreview();switchView("business");window.scrollTo({top:0,behavior:"smooth"})};
+window.deleteBusiness=async id=>{if(!confirm("Delete this business listing?"))return;const {error}=await db.from("businesses").delete().eq("id",id).eq("owner_id",user.id);if(error)return toast(error.message);await loadAll();toast("Business deleted.")};
+$("#resetBusiness").onclick=()=>{$("#businessForm").reset();$("#businessId").value="";$("#businessCity").value="Mbombela";selectedGalleryFiles=[];existingGalleryUrls=[];renderImagePreview("#businessLogoPreview","","fa-solid fa-store");renderImagePreview("#businessCoverPreview","","fa-regular fa-image");renderGalleryPreview()};
+$("#eventForm").onsubmit=async e=>{
+  e.preventDefault();
+
+  const id=$("#eventId").value;
+  const current=id?events.find(item=>item.id===id):null;
+  const submit=e.submitter;
+
+  if(submit){
+    submit.disabled=true;
+    submit.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Saving event...';
+  }
+
+  const progress=$("#eventUploadProgress");
+  const uploadCard=$("#eventPosterDropZone");
+  progress.classList.add("show");
+  uploadCard.classList.add("is-uploading");
+
+  try{
+    let posterUrl=currentEventPosterUrl||current?.poster_url||null;
+    if(selectedEventPosterFile){
+      posterUrl=await uploadBusinessImage(selectedEventPosterFile,"events");
+    }
+
+    const payload={
+      organizer_id:user.id,
+      category_id:$("#eventCategory").value,
+      title:$("#eventTitle").value.trim(),
+      slug:current?.slug||slugify($("#eventTitle").value)+"-"+Date.now().toString().slice(-5),
+      short_description:$("#eventDescription").value.trim().slice(0,180),
+      description:$("#eventDescription").value.trim(),
+      poster_url:posterUrl,
+      venue_name:$("#eventVenue").value.trim(),
+      city:$("#eventCity").value.trim()||"Mbombela",
+      starts_at:iso($("#eventStart").value),
+      ends_at:iso($("#eventEnd").value),
+      ticket_price_from:$("#eventPrice").value||null,
+      ticket_url:$("#eventTicket").value.trim()||null,
+      contact_phone:profile?.phone||null,
+      contact_email:user.email||null,
+      status:"pending",
+      is_published:false,
+      is_featured:false,
+      approved_by:null,
+      approved_at:null
+    };
+
+    const query=id
+      ?db.from("events")
+        .update(payload)
+        .eq("id",id)
+        .eq("organizer_id",user.id)
+      :db.from("events").insert(payload);
+
+    const {error}=await query;
+    if(error)throw error;
+
+    toast("Event sent to the Events section for admin approval.");
+    $("#resetEvent").click();
+    await loadEvents();
+    renderStats();
+    switchView("events");
+  }catch(error){
+    console.error("Event submission failed:",error);
+    toast(error.message||"The event could not be saved.");
+  }finally{
+    progress.classList.remove("show");
+    uploadCard.classList.remove("is-uploading");
+    if(submit){
+      submit.disabled=false;
+      submit.innerHTML="Save event";
+    }
+  }
+};
+window.editEvent=id=>{
+  const x=events.find(i=>i.id===id);
+  if(!x)return;
+  $("#eventId").value=x.id;
+  $("#eventTitle").value=x.title||"";
+  $("#eventCategory").value=x.category_id||"";
+  $("#eventStart").value=localInput(x.starts_at);
+  $("#eventEnd").value=localInput(x.ends_at);
+  $("#eventVenue").value=x.venue_name||"";
+  $("#eventCity").value=x.city||"";
+  $("#eventPrice").value=x.ticket_price_from||"";
+  $("#eventTicket").value=x.ticket_url||"";
+  $("#eventDescription").value=x.description||"";
+  $("#eventPosterFile").value="";
+  setEventPoster(null,x.poster_url||"");
+  switchView("events");
+  window.scrollTo({top:0,behavior:"smooth"});
+};
+window.deleteEvent=async id=>{
+  if(!confirm("Delete this event?"))return;
+
+  const {error}=await db
+    .from("events")
+    .delete()
+    .eq("id",id)
+    .eq("organizer_id",user.id);
+
+  if(error){
+    toast(error.message);
+    return;
+  }
+
+  await loadEvents();
+  renderStats();
+  toast("Event deleted.");
+};
+$("#resetEvent").onclick=()=>{
+  $("#eventForm").reset();
+  $("#eventId").value="";
+  $("#eventCity").value="Mbombela";
+  $("#eventPosterFile").value="";
+  setEventPoster();
+};
+$("#promotionForm").onsubmit=async e=>{
+  e.preventDefault();
+
+  const id=$("#promotionId").value;
+  const current=id?promotions.find(item=>item.id===id):null;
+  const submit=e.submitter;
+  const progress=$("#promotionUploadProgress");
+  const uploadCard=$("#promotionImageDropZone");
+
+  progress.classList.add("show");
+  uploadCard.classList.add("is-uploading");
+
+  if(submit){
+    submit.disabled=true;
+    submit.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Uploading & saving...';
+  }
+
+  try{
+    let imageUrl=currentPromotionImageUrl||current?.image_url||null;
+    if(selectedPromotionImageFile){
+      imageUrl=await uploadBusinessImage(selectedPromotionImageFile,"promotions");
+    }
+
+    const payload={
+      business_id:$("#promotionBusiness").value,
+      title:$("#promotionTitle").value.trim(),
+      description:$("#promotionDescription").value.trim(),
+      starts_at:iso($("#promotionStart").value),
+      ends_at:iso($("#promotionEnd").value),
+      image_url:imageUrl,
+      status:"pending",
+      is_published:false
+    };
+
+    const query=id
+      ?db.from("promotions").update(payload).eq("id",id)
+      :db.from("promotions").insert(payload);
+
+    const {error}=await query;
+    if(error)throw error;
+
+    toast("Promotion saved and sent for approval.");
+    $("#resetPromotion").click();
+    await loadPromotions();
+    renderStats();
+  }catch(error){
+    console.error("Promotion submission failed:",error);
+    toast(error.message||"The promotion could not be saved.");
+  }finally{
+    progress.classList.remove("show");
+    uploadCard.classList.remove("is-uploading");
+    if(submit){
+      submit.disabled=false;
+      submit.innerHTML="Save promotion";
+    }
+  }
+};
+window.editPromotion=id=>{
+  const x=promotions.find(i=>i.id===id);
+  if(!x)return;
+  $("#promotionId").value=x.id;
+  $("#promotionBusiness").value=x.business_id||"";
+  $("#promotionTitle").value=x.title||"";
+  $("#promotionDescription").value=x.description||"";
+  $("#promotionStart").value=localInput(x.starts_at);
+  $("#promotionEnd").value=localInput(x.ends_at);
+  $("#promotionImageFile").value="";
+  setPromotionImage(null,x.image_url||"");
+  switchView("promotions");
+  window.scrollTo({top:0,behavior:"smooth"});
+};
+window.deletePromotion=async id=>{if(!confirm("Delete this promotion?"))return;const {error}=await db.from("promotions").delete().eq("id",id);if(error)return toast(error.message);await loadPromotions();renderStats();toast("Promotion deleted.")};
+$("#resetPromotion").onclick=()=>{
+  $("#promotionForm").reset();
+  $("#promotionId").value="";
+  $("#promotionImageFile").value="";
+  setPromotionImage();
+};
+$("#profileForm").onsubmit=async e=>{e.preventDefault();const {error}=await db.from("profiles").update({full_name:$("#profileName").value,phone:$("#profilePhone").value}).eq("id",user.id);if(error)return toast(error.message);toast("Profile updated.");await init()};
+db.auth.onAuthStateChange(()=>{});
+setupBusinessUploads();
+setupExtraMediaUploads();
+setEventPoster();
+setPromotionImage();
+init();
+</script>
+</body>
+</html>
